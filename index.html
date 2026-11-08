@@ -689,10 +689,7 @@ function vSettings(){
   return `<div class="head"><div><div class="eyebrow">Settings</div><h1>Business details</h1></div><span class="saving">Changes save automatically</span></div>
   ${sb?`<div class="card sec"><div class="sec-h"><h2>Account</h2><span class="pill info" data-sync></span></div><p class="sub" style="margin:0">Signed in as <b>${esc(session&&session.user?session.user.email:'')}</b>. Quotes and invoices sync to every phone and laptop signed in to this account.</p><div class="row"><button class="btn" data-act="signout">Sign out</button></div></div>`:''}
   <div class="card sec"><h2>Install the app</h2>${installHtml()}</div>
-  <div class="card sec"><h2>Brand colours</h2><p class="sub" style="margin:0">Karol is still choosing. Switch any time and every document updates.</p>
-   <div class="swatch"><button class="sw" data-setbrand="blue" aria-pressed="${s.brand!=='gold'}"><i style="background:linear-gradient(135deg,#1E2B39 50%,#9CCBF0 50%)"></i>Baby blue &amp; silver</button>
-   <button class="sw" data-setbrand="gold" aria-pressed="${s.brand==='gold'}"><i style="background:linear-gradient(135deg,#0D0D0D 50%,#D4B066 50%)"></i>Black &amp; gold</button></div></div>
-  <div class="card sec"><h2>Company</h2><div class="grid">
+    <div class="card sec"><h2>Company</h2><div class="grid">
    ${fld('company.name','Company name',co.name)}${fld('company.web','Website',co.web)}
    ${fld('company.phone','Phone',co.phone)}${fld('company.email','Email',co.email)}
    <div class="f wide"><label for="company.address">Address</label><textarea id="company.address" data-sk="company.address">${esc(co.address)}</textarea></div>
@@ -743,7 +740,7 @@ function fromParent(p,type,extra){ return blank(type,Object.assign({parentId:p.i
 
 /* ---------- events ---------- */
 let toastT; function toast(m){ clearTimeout(toastT); let t=document.querySelector('.toast'); if(!t){t=document.createElement('div');t.className='toast';t.setAttribute('role','status');document.body.appendChild(t)} t.textContent=m; toastT=setTimeout(()=>t.remove(),2600); }
-function applyBrand(){ document.documentElement.setAttribute('data-brand',S.settings.brand==='gold'?'gold':'blue'); }
+function applyBrand(){ document.documentElement.setAttribute('data-brand','blue'); }
 
 document.addEventListener('click',async e=>{
   const el=e.target.closest('[data-go],[data-act],[data-open],[data-open-link],[data-filter],[data-mtab],[data-tpl],[data-del-line],[data-pick],[data-close],[data-scrim],[data-inv],[data-del-rate],[data-setbrand]'); if(!el)return;
