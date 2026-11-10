@@ -261,6 +261,16 @@ table.p-items{width:100%;border-collapse:collapse}
   .totbox{min-width:0;align-self:stretch}
   h1{font-size:23px}
 }
+/* narrow form column (e.g. laptop with preview open): stack each line */
+.form{container-type:inline-size}
+@media (min-width:821px){ @container (max-width:640px){
+  .items .it{grid-template-columns:minmax(0,.8fr) minmax(0,1.1fr) minmax(0,1fr) minmax(0,1.3fr) 30px;row-gap:6px}
+  .items .it .desc{grid-column:1/5;grid-row:1}
+  .items .it .x{grid-column:5;grid-row:1}
+  .items .it.h>span:first-child{display:none}
+  .items .it:not(.h){padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}
+} }
 @media (max-width:480px){ .kpis{grid-template-columns:minmax(0,1fr)} }
 @media (prefers-reduced-motion:no-preference){ .btn,.nav button,.chip{transition:background .15s,border-color .15s,color .15s} }
 </style>
@@ -544,7 +554,7 @@ function vEdit(){
       <div class="f"><label for="date">Date</label><input id="date" type="date" data-k="date" value="${esc(d.date)}"></div>
       ${d.type==='quote'?`<div class="f"><label for="validUntil">Valid until</label><input id="validUntil" type="date" data-k="validUntil" value="${esc(d.validUntil||'')}"></div>`:d.type==='invoice'?`<div class="f"><label for="due">Payment due</label><input id="due" type="date" data-k="due" value="${esc(d.due||'')}"></div>`:`<div class="f"><label for="method">Paid by</label><select id="method" data-k="method">${['Bank transfer','Card','Cash','Cheque'].map(m=>`<option ${d.method===m?'selected':''}>${m}</option>`).join('')}</select></div>`}
       <div class="f wide"><label for="title">Project title</label><input id="title" data-k="title" placeholder="e.g. Knock-through to open-plan kitchen and dining" value="${esc(d.title)}"></div>
-      <div class="f"><label for="service">Service</label><select id="service" data-k="service">${SERVICES.map(s=>`<option ${d.service===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="f wide"><label for="service">Service</label><select id="service" data-k="service">${SERVICES.map(s=>`<option ${d.service===s?'selected':''}>${s}</option>`).join('')}</select></div>
       ${isR?`<div class="f"><label for="amount">Amount received (£)</label><input id="amount" class="num" type="number" step="0.01" min="0" data-k="amount" value="${esc(d.amount)}"></div><div class="f"><label for="ref">Payment reference</label><input id="ref" data-k="ref" value="${esc(d.ref||'')}"></div>`:''}
      </div></div>
     <div class="card sec"><h2>Client &amp; site</h2>
