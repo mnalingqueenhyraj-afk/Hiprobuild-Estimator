@@ -169,7 +169,16 @@ table.list{width:100%;border-collapse:collapse;min-width:640px}
 .picker button{display:flex;justify-content:space-between;gap:12px;border:1px solid transparent;background:var(--surface-2);border-radius:8px;padding:9px 12px;cursor:pointer;text-align:left}
 .picker button:hover{border-color:var(--accent)}
 .note{font-size:12.5px;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-.rates .it{grid-template-columns:150px minmax(0,1fr) 80px 100px 30px}
+.rates .it{grid-template-columns:72px 130px minmax(0,1fr) 72px 92px 92px 90px 30px}
+.rates .it .tot{text-align:right;font-family:var(--f-mono);font-size:13px;font-weight:600}
+.rates .it .code-c{font-family:var(--f-mono);font-size:12px;text-transform:uppercase}
+.rates .it input,.rates .it select{width:100%;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px 10px;min-width:0}
+.rates .it input.n{text-align:right;font-family:var(--f-mono)}
+.libsv:empty{display:none}
+.libsv button{align-self:flex-start;border:0;background:none;color:var(--accent);font-size:11.5px;font-weight:600;padding:2px 2px;cursor:pointer}
+.libsv button:hover{text-decoration:underline}
+.picker .code{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-right:6px}
+.gptbox{width:100%;min-height:220px;font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:10px}
 .swatch{display:flex;gap:12px;flex-wrap:wrap}
 .sw{border:2px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;background:var(--surface);display:flex;gap:10px;align-items:center;font-weight:600}
 .sw[aria-pressed="true"]{border-color:var(--accent)}
@@ -244,8 +253,11 @@ table.p-items{width:100%;border-collapse:collapse}
   .it{grid-template-columns:minmax(0,1fr) 58px 64px 30px}
   .it .unit-c,.it .amt{display:none}
   .it.h .unit-c,.it.h .amt{display:none}
-  .rates .it{grid-template-columns:minmax(0,1fr) 84px 30px}
-  .rates .it .sec-c,.rates .it .unit-c{display:none}
+  .rates .it{grid-template-columns:repeat(3,minmax(0,1fr)) 30px}
+  .rates .it .sec-c,.rates .it .unit-c,.rates .it .code-c{display:none}
+  .rates .it .desc-c{grid-column:1/4;grid-row:1}
+  .rates .it .x{grid-column:4;grid-row:1}
+  .rates .it.h{display:none}
   .totbox{min-width:0;align-self:stretch}
   h1{font-size:23px}
 }
@@ -301,7 +313,23 @@ const addDays=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);r
 const fdate=d=>d?new Date(d+'T12:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'';
 const TYPES={quote:{label:'Quotation',short:'Quote',prefix:'Q-'},invoice:{label:'Invoice',short:'Invoice',prefix:'INV-'},receipt:{label:'Receipt',short:'Receipt',prefix:'RCT-'}};
 const SERVICES=['Open-Plan Kitchen Conversion','Structural Alterations & Wall Removal','Kitchen Renovation','Bathroom Renovation','Property Refurbishment','Joinery & Carpentry','Sash & Case Window Restoration','Insulation & Internal Wall Upgrade','Other'];
-const UNITS=['item','m²','m','nr','day','hr','lot'];
+const UNITS=['item','m²','m','m³','nr','day','hr','lot'];
+const UNIT_MAP={h:'hr',hr:'hr',hrs:'hr',hour:'hr',hours:'hr',day:'day',days:'day',m:'m',lm:'m','l/m':'m',metre:'m',metres:'m',meter:'m',meters:'m',m2:'m²','m²':'m²',sqm:'m²','sq m':'m²',m3:'m³','m³':'m³',nr:'nr',no:'nr',each:'nr',ea:'nr',set:'nr',pair:'nr',lot:'lot',sum:'lot',item:'item',items:'item'};
+const toUnit=u=>UNIT_MAP[String(u||'').toLowerCase().trim()]||(UNITS.includes(String(u||'').trim())?String(u).trim():'item');
+const codePrefix=sec=>{ const w=String(sec||'Other').replace(/&/g,' ').trim().split(/\s+/).filter(Boolean); return (w.length>1?w[0][0]+w[1][0]:(w[0]||'OT').slice(0,2)).toUpperCase().replace(/[^A-Z]/g,'X'); };
+function nextCode(list,sec){ const p=codePrefix(sec); let n=0; list.forEach(r=>{ const m=String(r.code||'').match(new RegExp('^'+p+'-(\\d+)$')); if(m) n=Math.max(n,+m[1]); }); return p+'-'+String(n+1).padStart(2,'0'); }
+function normRates(list){ let changed=false; (list||[]).forEach(r=>{
+  if(!r.id){r.id=uid();changed=true}
+  if(r.labour===undefined&&r.materials===undefined){ r.labour=+r.rate||0; r.materials=0; changed=true; }
+  r.labour=+r.labour||0; r.materials=+r.materials||0; r.rate=Math.round((r.labour+r.materials)*100)/100;
+  if(!r.code){ r.code=nextCode(list,r.section); changed=true; } });
+  const seen={}; (list||[]).forEach(r=>{ const c=String(r.code).toUpperCase(); if(seen[c]){ r.code=''; r.code=nextCode(list,r.section); changed=true; } seen[String(r.code).toUpperCase()]=1; r.code=String(r.code).toUpperCase(); });
+  return changed; }
+const libFind=(code,desc)=>{ const L=S.settings.rates, c=String(code||'').trim().toUpperCase(), d=String(desc||'').trim().toLowerCase();
+  return (c&&L.find(r=>String(r.code).toUpperCase()===c)) || (d&&L.find(r=>r.desc.toLowerCase()===d)) || null; };
+const libLine=(r,qty)=>({code:r.code,section:r.section,desc:r.desc,unit:r.unit,rate:r.rate,qty});
+function libState(it){ if(!(+it.rate>0)||!String(it.desc||'').trim()) return ''; const r=libFind(it.code,it.desc); if(!r) return 'new'; return Math.abs((+r.rate||0)-(+it.rate))>0.004?'upd':''; }
+function libBtn(it,i){ const st=libState(it); return st?`<button type="button" data-libsave="${i}">${st==='new'?'+ Save to price library':'↻ Update library rate'}</button>`:''; }
 
 const DEFAULT_RATES=[
  ['Preliminaries','Site set-up, floor protection & dust screening','item',350],
@@ -329,7 +357,8 @@ const DEFAULT_RATES=[
  ['Insulation','Internal wall insulation incl. vapour control & boarding','m²',75],
  ['Waste','Skip hire & waste removal','nr',320],
  ['Waste','Builders\' clean on completion','item',250]
-].map(([section,desc,unit,rate])=>({id:uid(),section,desc,unit,rate}));
+].map(([section,desc,unit,rate])=>({id:uid(),section,desc,unit,rate,labour:rate,materials:0}));
+normRates(DEFAULT_RATES);
 
 const TEMPLATES={
  'Open-plan kitchen':{service:'Open-Plan Kitchen Conversion',pick:[['Site set-up',1],['Coordination with structural',1],['Temporary propping',1],['Take down load-bearing',3.6],['Supply & install steel',4.2],['Padstones',2],['Joinery, first fix',2],['Joinery, second fix',2],['Plumbing alterations',2],['Electrical alterations',2],['Additional double socket',4],['LED downlight',8],['Plasterboard & skim',22],['Floor levelling',24],['Kitchen installation',4],['Worktop template',5],['Painting',90],['Skip hire',2],['Builders\' clean',1]]},
@@ -450,7 +479,7 @@ function newQuote(){ S.editing=blank('quote'); S.view='edit'; S.tab='edit'; rend
 function openDoc(id){ const d=S.docs.find(x=>x.id===id); if(!d)return; S.editing=structuredClone(d); S.view='edit'; S.tab='edit'; render(); }
 
 /* ---------- views ---------- */
-const NAV=[['dash','Dashboard','dash'],['docs','Documents','docs'],['rates','Rate book','rates'],['settings','Settings','settings']];
+const NAV=[['dash','Dashboard','dash'],['docs','Documents','docs'],['rates','Price library','rates'],['settings','Settings','settings']];
 function renderNav(){
   document.getElementById('nav').innerHTML=NAV.map(([k,l,i])=>`<button data-go="${k}" aria-current="${S.view===k||(k==='docs'&&S.view==='edit')}">${ic(i)}<span>${l}</span></button>`).join('')
    + `<button data-act="new-quote" class="mnew" title="New quote" aria-label="New quote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg><span>New quote</span></button>`;
@@ -526,7 +555,7 @@ function vEdit(){
       <div class="f"><label for="caddr">Billing address</label><input id="caddr" data-k="client.address" value="${esc(d.client.address)}"></div>
       <div class="f wide"><label for="site">Site address (if different)</label><input id="site" data-k="site" placeholder="e.g. 2F1, tenement flat, Leith" value="${esc(d.site)}"></div>
      </div></div>
-    ${isR?'':`<div class="card sec"><div class="sec-h"><h2>Scope &amp; pricing</h2><div class="row"><button class="btn sm" data-act="import-gpt">Paste from ChatGPT</button><button class="btn sm" data-act="pick">Add from rate book</button><button class="btn sm" data-act="add-line">Add custom line</button></div></div>
+    ${isR?'':`<div class="card sec"><div class="sec-h"><h2>Scope &amp; pricing</h2><div class="row"><button class="btn sm" data-act="import-gpt">Paste from ChatGPT</button><button class="btn sm" data-act="pick">Add from price library</button><button class="btn sm" data-act="add-line">Add custom line</button></div></div>
      ${d.type==='quote'?`<div class="row"><span class="sub">Quick estimate:</span><div class="tpl">${Object.keys(TEMPLATES).map(k=>`<button class="chip" data-tpl="${esc(k)}">${esc(k)}</button>`).join('')}</div></div>`:''}
      <div class="items" id="items"></div>
      <div class="row" style="justify-content:space-between;align-items:flex-start;gap:20px">
@@ -549,9 +578,9 @@ function vEdit(){
 }
 function itemsHtml(){
   const d=S.editing;
-  if(!d.items.length) return `<div class="note">No lines yet. ${d.type==='quote'?'Pick a quick estimate above, or ':''}add lines from your rate book.</div>`;
+  if(!d.items.length) return `<div class="note">No lines yet. ${d.type==='quote'?'Pick a quick estimate above, or ':''}add lines from your price library.</div>`;
   return `<div class="it h"><span>Description</span><span style="text-align:right">Qty</span><span class="unit-c">Unit</span><span style="text-align:right">Rate £</span><span class="amt">Amount</span><span></span></div>`+
-   d.items.map((it,i)=>`<div class="it" data-i="${i}"><div class="desc"><input class="secin" data-ik="section" value="${esc(it.section)}" aria-label="Trade / section" list="secs" placeholder="Trade"><input data-ik="desc" value="${esc(it.desc)}" aria-label="Description"></div>
+   d.items.map((it,i)=>`<div class="it" data-i="${i}"><div class="desc"><input class="secin" data-ik="section" value="${esc(it.section)}" aria-label="Trade / section" list="secs" placeholder="Trade"><input data-ik="desc" value="${esc(it.desc)}" aria-label="Description"><span class="libsv" data-lib-slot="${i}">${libBtn(it,i)}</span></div>
    <input class="n" type="number" step="0.1" min="0" data-ik="qty" value="${esc(it.qty)}" aria-label="Quantity">
    <select class="unit-c" data-ik="unit" aria-label="Unit">${UNITS.map(u=>`<option ${it.unit===u?'selected':''}>${u}</option>`).join('')}</select>
    <input class="n" type="number" step="0.01" min="0" data-ik="rate" value="${esc(it.rate)}" aria-label="Rate">
@@ -671,11 +700,89 @@ async function copy(text){ try{await navigator.clipboard.writeText(text);toast('
 /* ---------- rates & settings ---------- */
 function vRates(){
   const r=S.settings.rates;
-  return `<div class="head"><div><div class="eyebrow">Rate book</div><h1>Your standard rates</h1></div><div class="row"><button class="btn" data-act="add-rate">Add rate</button></div></div>
-  <div class="note">These rates feed the quick estimates and the “Add from rate book” picker. The starting figures are examples only. Replace them with Karol's own rates before sending any quote.</div>
-  <div class="card sec rates"><div class="it h"><span class="sec-c">Trade</span><span>Description</span><span class="unit-c">Unit</span><span style="text-align:right">Rate £</span><span></span></div>
-   ${r.map((x,i)=>`<div class="it" data-r="${i}"><input class="sec-c" data-rk="section" value="${esc(x.section)}" aria-label="Trade"><input data-rk="desc" value="${esc(x.desc)}" aria-label="Description"><select class="unit-c" data-rk="unit" aria-label="Unit">${UNITS.map(u=>`<option ${x.unit===u?'selected':''}>${u}</option>`).join('')}</select><input class="n" type="number" step="0.01" data-rk="rate" value="${esc(x.rate)}" aria-label="Rate"><button class="x" data-del-rate="${i}" aria-label="Remove rate">✕</button></div>`).join('')}
+  return `<div class="head"><div><div class="eyebrow">Price library</div><h1>Your labour &amp; material rates</h1></div><div class="row"><button class="btn" data-act="import-rates">Import from spreadsheet</button><button class="btn" data-act="gpt-setup">Copy for ChatGPT</button><button class="btn primary" data-act="add-rate">Add item</button></div></div>
+  <div class="note">Rates are per unit, excluding VAT. Total = labour + materials. These feed the quick estimates, the “Add from price library” picker and the ChatGPT import (matched by code). Starting figures are examples only. Replace them with your own rates before sending any quote.</div>
+  <div class="card sec rates"><div class="f" style="max-width:360px"><label for="rq">Search</label><input id="rq" placeholder="e.g. steel, partition, ST-01"></div>
+   <div class="it h"><span class="code-c">Code</span><span class="sec-c">Trade</span><span>Item</span><span class="unit-c">Unit</span><span style="text-align:right">Labour £</span><span style="text-align:right">Materials £</span><span style="text-align:right">Total £</span><span></span></div>
+   ${r.map((x,i)=>`<div class="it" data-r="${i}" data-q="${esc((x.code+' '+x.section+' '+x.desc).toLowerCase())}"><input class="code-c" data-rk="code" value="${esc(x.code)}" aria-label="Code"><input class="sec-c" data-rk="section" value="${esc(x.section)}" aria-label="Trade" list="rsecs"><input class="desc-c" data-rk="desc" value="${esc(x.desc)}" aria-label="Item"><select class="unit-c" data-rk="unit" aria-label="Unit">${UNITS.map(u=>`<option ${x.unit===u?'selected':''}>${u}</option>`).join('')}</select><input class="n" type="number" step="0.01" min="0" data-rk="labour" value="${esc(x.labour)}" placeholder="Labour" aria-label="Labour rate"><input class="n" type="number" step="0.01" min="0" data-rk="materials" value="${esc(x.materials)}" placeholder="Materials" aria-label="Materials rate"><span class="tot" data-rt="${i}">${money(x.rate)}</span><button class="x" data-del-rate="${i}" aria-label="Remove item">✕</button></div>`).join('')}
+   <datalist id="rsecs">${[...new Set(r.map(x=>x.section))].map(s=>`<option value="${esc(s)}">`).join('')}</datalist>
   </div>`;
+}
+function libSaveModal(i){
+  const it=S.editing.items[i], L=S.settings.rates, r=libFind(it.code,it.desc), rate=+it.rate||0;
+  let lab=rate,mat=0; if(r&&+r.materials>0&&rate>=+r.materials){ mat=+r.materials; lab=Math.round((rate-mat)*100)/100; }
+  const sec=(r&&r.section)||it.section||'Other';
+  S._lib={i,id:r?r.id:null,auto:r?'':nextCode(L,sec)};
+  return `<div class="sec-h"><h2>${r?'Update price library':'Save to price library'}</h2><button class="btn ghost sm" data-close>Close</button></div>
+   <p class="sub" style="margin:0">${r?'This changes the saved rate for next time. Quotes already sent are not affected.':'Next time, this item will be in the picker and ChatGPT can use it by its code.'} Split the rate into labour and materials if you know it.</p>
+   <div class="grid"><div class="f"><label for="ls-c">Code</label><input id="ls-c" class="num" value="${esc(r?r.code:nextCode(L,sec))}"></div>
+   <div class="f"><label for="ls-s">Trade</label><input id="ls-s" value="${esc(sec)}" list="rsecs2"></div>
+   <div class="f wide"><label for="ls-d">Item</label><input id="ls-d" value="${esc(it.desc)}"></div>
+   <div class="f"><label for="ls-u">Unit</label><select id="ls-u">${UNITS.map(u=>`<option ${(it.unit||'item')===u?'selected':''}>${u}</option>`).join('')}</select></div><div></div>
+   <div class="f"><label for="ls-l">Labour £ per unit</label><input id="ls-l" class="num" type="number" step="0.01" min="0" value="${lab}"></div>
+   <div class="f"><label for="ls-m">Materials £ per unit</label><input id="ls-m" class="num" type="number" step="0.01" min="0" value="${mat}"></div></div>
+   <datalist id="rsecs2">${[...new Set(L.map(x=>x.section))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+   <div class="row" style="justify-content:space-between"><span>Total per unit <b class="num" id="ls-t">${money(lab+mat)}</b></span><div class="row"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" data-act="libsave-go">Save</button></div></div>`;
+}
+function importRatesModal(){
+  return `<div class="sec-h"><h2>Import from spreadsheet</h2><button class="btn ghost sm" data-close>Close</button></div>
+   <p class="sub" style="margin:0">In Excel or Google Sheets, select your rows <b>including the header row</b>, copy, and paste here. Columns it reads: Code, Category (or Trade), Item, Unit, Labour, Materials. You can also choose a .csv file.</p>
+   <div class="f"><label for="rin">Rows</label><textarea id="rin" class="gptbox" placeholder="Code	Category	Item	Unit	Labour	Materials"></textarea></div>
+   <div class="row"><label class="btn sm" for="ratefile">Choose .csv file</label><input id="ratefile" type="file" accept=".csv,.tsv,.txt,text/csv" hidden></div>
+   <label class="check"><input type="checkbox" id="rreplace"> Replace the whole library with this list (removes the example rates)</label>
+   <div class="note" id="rerr" hidden></div>
+   <div class="row" style="justify-content:flex-end"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" data-act="rates-go">Import</button></div>`;
+}
+function splitRows(txt){
+  txt=String(txt||'').replace(/\r\n?/g,'\n'); const first=txt.split('\n').find(l=>l.trim())||''; const d=first.includes('\t')?'\t':first.split(';').length>first.split(',').length?';':',';
+  const rows=[]; let row=[],cell='',q=false;
+  for(let i=0;i<txt.length;i++){ const ch=txt[i];
+    if(q){ if(ch==='"'){ if(txt[i+1]==='"'){cell+='"';i++} else q=false } else cell+=ch; continue }
+    if(ch==='"'&&cell==='') q=true; else if(ch===d){row.push(cell);cell=''} else if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell=''} else cell+=ch; }
+  row.push(cell); rows.push(row); return rows.map(r=>r.map(c=>c.trim())).filter(r=>r.some(Boolean));
+}
+function parseRates(txt){
+  const rows=splitRows(txt); const hi=rows.findIndex(r=>r.some(c=>/^(item|description|labour|labor|materials?)\b/i.test(c)));
+  if(hi<0) throw new Error('nohead');
+  const H=rows[hi].map(c=>c.toLowerCase()); const col=re=>H.findIndex(h=>re.test(h));
+  const ci={code:col(/^code/),sec:col(/categor|trade|section/),desc:col(/^(item|description|desc)/),unit:col(/^unit/),lab:col(/^lab/),mat:col(/^mat/),tot:col(/^(total|rate)/)};
+  if(ci.desc<0) throw new Error('nohead');
+  const num=v=>{ const n=parseFloat(String(v??'').replace(/[£,\s]/g,'')); return isFinite(n)?n:null };
+  return rows.slice(hi+1).map(r=>{ const g=k=>ci[k]<0?'':(r[ci[k]]||''); const lab=num(g('lab')),mat=num(g('mat')),tot=num(g('tot'));
+    return {code:g('code').toUpperCase(),section:g('sec')||'Other',desc:g('desc'),unit:toUnit(g('unit')),labour:lab,materials:mat,total:tot}; }).filter(x=>x.desc);
+}
+function gptSetupText(withPrices){
+  const L=S.settings.rates, secs=[...new Set(L.map(r=>r.section))];
+  const list=secs.map(sct=>sct.toUpperCase()+'\n'+L.filter(r=>r.section===sct).map(r=>`${r.code} | ${r.desc} | per ${r.unit}${withPrices?` | labour £${(+r.labour).toFixed(2)} + materials £${(+r.materials).toFixed(2)} = £${(+r.rate).toFixed(2)}`:''}`).join('\n')).join('\n\n');
+  return `You help Karol from Hiprobuild Contracts Ltd (Edinburgh) build quotes for the Hiprobuild Estimator app.
+
+When Karol describes a job, break it into line items from the PRICE LIBRARY below. Use the item code and the unit shown, and work out sensible quantities from what he tells you. Ask one short question if a quantity is missing.
+${withPrices?'You can use the rates below to give Karol a rough total.':'Do not add prices for library items. The Estimator fills in Karol\'s own labour and material rates automatically from the code.'}
+If something is not in the library, add it with "code": "" and a clear description${withPrices?'':', and only add a "rate" if Karol gives you one'}.
+No VAT. Gas work is done by a Gas Safe registered engineer, so only include it if Karol gives the figure. Structural work follows the engineer's drawings and building warrant. Do not include engineer or warrant fees unless Karol gives them.
+
+When Karol types "export", reply with ONE JSON code block only, in this exact format:
+{
+  "type": "quote",
+  "project_title": "",
+  "service": "",
+  "client": { "name": "", "phone": "", "email": "", "address": "" },
+  "site_address": "",
+  "items": [
+    { "code": "ST-01", "section": "Structural", "description": "", "qty": 1, "unit": "m" }
+  ],
+  "notes": ""
+}
+
+PRICE LIBRARY (code | item | unit${withPrices?' | rate':''}):
+${list}`;
+}
+function gptSetupModal(withPrices){
+  return `<div class="sec-h"><h2>Copy for ChatGPT</h2><button class="btn ghost sm" data-close>Close</button></div>
+   <p class="sub" style="margin:0">Paste this into your ChatGPT project or custom GPT instructions (or at the start of a new chat). Copy it again whenever you add new items.</p>
+   <label class="check"><input type="checkbox" id="gptprices" ${withPrices?'checked':''}> Include my prices (leave off to keep your rates private, the app adds them for you)</label>
+   <textarea id="gptsetup" class="gptbox" readonly>${esc(gptSetupText(withPrices))}</textarea>
+   <div class="row" style="justify-content:flex-end"><button class="btn ghost" data-close>Close</button><button class="btn primary" data-act="gpt-copy">Copy</button></div>`;
 }
 function installHtml(){
   if(matchMedia('(display-mode: standalone)').matches||navigator.standalone) return '<p class="sub" style="margin:0">Installed on this device. Open it from your home screen or app list.</p>';
@@ -712,11 +819,11 @@ function vSettings(){
 function modal(html){ document.getElementById('layer').innerHTML=`<div class="scrim" data-scrim><div class="card modal" role="dialog" aria-modal="true">${html}</div></div>`; }
 function closeModal(){ document.getElementById('layer').innerHTML=''; }
 function pickModal(q){
-  const r=S.settings.rates.filter(x=>!q||(x.desc+' '+x.section).toLowerCase().includes(q.toLowerCase()));
+  const r=S.settings.rates.filter(x=>!q||(x.code+' '+x.desc+' '+x.section).toLowerCase().includes(q.toLowerCase()));
   const secs=[...new Set(r.map(x=>x.section))];
-  return `<div class="sec-h"><h2>Add from rate book</h2><button class="btn ghost sm" data-close>Close</button></div>
+  return `<div class="sec-h"><h2>Add from price library</h2><button class="btn ghost sm" data-close>Close</button></div>
    <div class="f"><label for="pq">Search</label><input id="pq" value="${esc(q||'')}" placeholder="e.g. steel, socket, tiling"></div>
-   <div class="picker" id="plist">${secs.map(s=>`<div class="grp">${esc(s)}</div>`+r.filter(x=>x.section===s).map(x=>`<button data-pick="${x.id}"><span>${esc(x.desc)}</span><span class="num sub">${money(x.rate)}/${esc(x.unit)}</span></button>`).join('')).join('')||'<div class="note">No rates match. Add it in the Rate book.</div>'}</div>`;
+   <div class="picker" id="plist">${secs.map(s=>`<div class="grp">${esc(s)}</div>`+r.filter(x=>x.section===s).map(x=>`<button data-pick="${x.id}"><span><span class="code">${esc(x.code)}</span>${esc(x.desc)}</span><span class="num sub">${money(x.rate)}/${esc(x.unit)}</span></button>`).join('')).join('')||'<div class="note">No items match. Add it in the Price library.</div>'}</div>`;
 }
 function toInvoiceModal(){
   const q=S.editing,c=calc(q), prior=S.docs.filter(d=>d.type==='invoice'&&d.parentId===q.id).reduce((a,d)=>a+calc(d).net,0);
@@ -749,21 +856,22 @@ function parseGpt(txt){
   const a=txt.indexOf('{'), b=txt.lastIndexOf('}'); if(a<0||b<=a) throw new Error('none');
   let j; try{ j=JSON.parse(txt.slice(a,b+1)); }catch(e){ j=JSON.parse(txt.slice(a,b+1).replace(/,\s*([}\]])/g,'$1')); }
   const num=v=>{ const n=parseFloat(String(v??'').replace(/[£,\s]/g,'')); return isFinite(n)?n:0 };
-  const unitMap={h:'hr',hr:'hr',hrs:'hr',hour:'hr',hours:'hr',day:'day',days:'day',m:'m',lm:'m',metre:'m',metres:'m',meter:'m',m2:'m²','m²':'m²',sqm:'m²',nr:'nr',no:'nr',each:'nr',lot:'lot',item:'item',items:'item'};
-  const items=(Array.isArray(j.items)?j.items:[]).map(it=>({
-    section:String(it.section||it.trade||'').trim(),
-    desc:String(it.description||it.desc||it.name||'').trim(),
-    qty:num(it.qty??it.quantity??1)||1,
-    unit:unitMap[String(it.unit||'item').toLowerCase().trim()]||'item',
-    rate:num(it.rate??it.price??it.unit_price??it.amount)
-  })).filter(it=>it.desc||it.rate);
+  let fromLib=0;
+  const items=(Array.isArray(j.items)?j.items:[]).map(it=>{
+    const line={code:String(it.code||'').trim().toUpperCase(),section:String(it.section||it.trade||'').trim(),desc:String(it.description||it.desc||it.name||'').trim(),
+      qty:num(it.qty??it.quantity??1)||1,unit:toUnit(it.unit||'item'),rate:num(it.rate??it.price??it.unit_price??it.amount)};
+    const r=libFind(line.code,line.desc);
+    if(r){ fromLib++; line.code=r.code; line.section=r.section; line.desc=r.desc; line.unit=r.unit; if(+r.rate>0) line.rate=r.rate; }
+    else if(line.code&&!line.desc) line.desc='Item '+line.code+' (not in price library)';
+    return line;
+  }).filter(it=>it.desc||it.rate);
   const c=j.client||{}, pays=Array.isArray(j.payments_received)?j.payments_received.filter(p=>num(p.amount)):[];
   let notes=String(j.notes||'').trim();
   if(pays.length) notes+=(notes?'\n\n':'')+'Payments received to date:\n'+pays.map(p=>`${p.date?fdate(p.date)+': ':''}${money(num(p.amount))}${p.note?' ('+p.note+')':''}`).join('\n');
   const t=String(j.project_title||j.title||'');
   const svc=SERVICES.find(s=>s.toLowerCase()===String(j.service||'').toLowerCase())
     || (/open.?plan/i.test(t)?SERVICES[0]:/wall|structural|steel|beam/i.test(t)?SERVICES[1]:/bathroom/i.test(t)?SERVICES[3]:/sash|window/i.test(t)?SERVICES[6]:/insulat/i.test(t)?SERVICES[7]:/kitchen/i.test(t)?SERVICES[2]:/refurb/i.test(t)?SERVICES[4]:/joinery|carpent/i.test(t)?SERVICES[5]:'');
-  return {type:/invoice/i.test(j.type||'')?'invoice':'quote',client:{name:String(c.name||''),email:String(c.email||''),phone:String(c.phone||''),address:String(c.address||'')},
+  return {fromLib,type:/invoice/i.test(j.type||'')?'invoice':'quote',client:{name:String(c.name||''),email:String(c.email||''),phone:String(c.phone||''),address:String(c.address||'')},
     site:String(j.site_address||j.site||''),title:t,service:svc,items,notes,depositPct:j.deposit_percent===undefined||j.deposit_percent===''?null:num(j.deposit_percent)};
 }
 function fromParent(p,type,extra){ return blank(type,Object.assign({parentId:p.id,client:structuredClone(p.client),site:p.site,service:p.service,title:p.title,vat:p.vat,reverseCharge:p.reverseCharge},extra)); }
@@ -773,7 +881,7 @@ let toastT; function toast(m){ clearTimeout(toastT); let t=document.querySelecto
 function applyBrand(){ document.documentElement.setAttribute('data-brand','blue'); }
 
 document.addEventListener('click',async e=>{
-  const el=e.target.closest('[data-go],[data-act],[data-open],[data-open-link],[data-filter],[data-mtab],[data-tpl],[data-del-line],[data-pick],[data-close],[data-scrim],[data-inv],[data-del-rate],[data-setbrand]'); if(!el)return;
+  const el=e.target.closest('[data-go],[data-act],[data-open],[data-open-link],[data-filter],[data-mtab],[data-tpl],[data-del-line],[data-pick],[data-close],[data-scrim],[data-inv],[data-del-rate],[data-setbrand],[data-libsave]'); if(!el)return;
   if(el.hasAttribute('data-scrim')&&e.target!==el)return;
   if(el.dataset.go){ if(S.view==='edit')await flushEdit(); S.view=el.dataset.go; S.armDel=null; render(); return }
   if(el.dataset.open){ openDoc(el.dataset.open); return }
@@ -783,10 +891,11 @@ document.addEventListener('click',async e=>{
   if(el.hasAttribute('data-close')||el.hasAttribute('data-scrim')){ closeModal(); return }
   if(el.dataset.setbrand){ S.settings.brand=el.dataset.setbrand; await persistSettings(); render(); return }
   if(el.dataset.tpl){ const T=TEMPLATES[el.dataset.tpl], d=S.editing; d.service=T.service; if(!d.title)d.title=el.dataset.tpl==='Open-plan kitchen'?'Open-plan kitchen conversion':T.service;
-    T.pick.forEach(([needle,qty])=>{const r=S.settings.rates.find(x=>x.desc.toLowerCase().startsWith(needle.toLowerCase())); if(r)d.items.push({section:r.section,desc:r.desc,unit:r.unit,rate:r.rate,qty})});
+    T.pick.forEach(([needle,qty])=>{const r=S.settings.rates.find(x=>x.desc.toLowerCase().startsWith(needle.toLowerCase())); if(r)d.items.push(libLine(r,qty))});
     render(); touched(); toast('Estimate added. Adjust quantities to suit the site.'); return }
   if(el.dataset.delLine!==undefined){ S.editing.items.splice(+el.dataset.delLine,1); touched(true); return }
-  if(el.dataset.pick){ const r=S.settings.rates.find(x=>x.id===el.dataset.pick); S.editing.items.push({section:r.section,desc:r.desc,unit:r.unit,rate:r.rate,qty:1}); closeModal(); touched(true); toast('Line added'); return }
+  if(el.dataset.pick){ const r=S.settings.rates.find(x=>x.id===el.dataset.pick); S.editing.items.push(libLine(r,1)); closeModal(); touched(true); toast('Line added'); return }
+  if(el.dataset.libsave!==undefined){ modal(libSaveModal(+el.dataset.libsave)); return }
   if(el.dataset.delRate!==undefined){ S.settings.rates.splice(+el.dataset.delRate,1); await persistSettings(); render(); return }
   if(el.dataset.inv){ const q=S.editing,c=calc(q),kind=el.dataset.inv; let items;
     if(kind==='full') items=structuredClone(q.items);
@@ -811,7 +920,7 @@ document.addEventListener('click',async e=>{
     if(g.notes) d.notes=d.notes?d.notes+'\n\n'+g.notes:g.notes;
     if(d.type==='quote'&&g.depositPct!==null&&!ed) d.depositPct=g.depositPct;
     closeModal(); if(!ed){ S.editing=d; S.view='edit'; S.tab='edit'; } render(); touched();
-    toast(g.items.length+' line'+(g.items.length===1?'':'s')+' imported. Check the prices, then tap Save.'); }
+    const nop=g.items.filter(x=>!(+x.rate)).length; toast(g.items.length+' line'+(g.items.length===1?'':'s')+' imported'+(g.fromLib?', '+g.fromLib+' priced from your library':'')+(nop?'. '+nop+' still need a price':'')+'. Check, then tap Save.'); }
   if(a==='add-line'){ S.editing.items.push({section:'',desc:'',qty:1,unit:'item',rate:0}); touched(true); const ins=document.querySelectorAll('#items [data-ik="desc"]'); ins[ins.length-1]&&ins[ins.length-1].focus(); }
   if(a==='pick'){ modal(pickModal('')); document.getElementById('pq').focus(); }
   if(a==='pdf') makePdf();
@@ -824,7 +933,28 @@ document.addEventListener('click',async e=>{
   if(a==='export'){ try{ await saveFile('Hiprobuild backup '+today()+'.json',new Blob([JSON.stringify({app:'hiprobuild-estimator',v:1,settings:S.settings,docs:S.docs},null,1)],{type:'application/json'})); toast('Backup saved'); }catch(e){ if(!(e&&e.code==='declined')) toast('Could not save the backup. Try again.'); } }
   if(a==='signout') signOut();
   if(a==='install'&&deferredPrompt){ deferredPrompt.prompt(); try{await deferredPrompt.userChoice}catch(e){} deferredPrompt=null; render(); }
-  if(a==='add-rate'){ S.settings.rates.unshift({id:uid(),section:'Other',desc:'New item',unit:'item',rate:0}); await persistSettings(); render(); }
+  if(a==='add-rate'){ const L=S.settings.rates; L.unshift({id:uid(),code:nextCode(L,'Other'),section:'Other',desc:'New item',unit:'item',labour:0,materials:0,rate:0}); await persistSettings(); render(); const f=document.querySelector('.rates [data-r="0"] [data-rk="desc"]'); f&&f.select(); }
+  if(a==='libsave-go'&&S._lib){ const L=S.settings.rates, v=id=>document.getElementById(id).value, it=S.editing.items[S._lib.i];
+    const desc=v('ls-d').trim(); if(!desc){ toast('Add an item name first.'); return }
+    let r=S._lib.id?L.find(x=>x.id===S._lib.id):null; const isNew=!r;
+    if(!r){ r={id:uid()}; L.push(r); }
+    r.section=v('ls-s').trim()||'Other'; r.desc=desc; r.unit=v('ls-u'); r.labour=+v('ls-l')||0; r.materials=+v('ls-m')||0; r.rate=Math.round((r.labour+r.materials)*100)/100;
+    let c=v('ls-c').toUpperCase().trim(); if(isNew&&c===S._lib.auto){ c=''; r.code=''; } r.code=c&&!L.some(x=>x!==r&&String(x.code).toUpperCase()===c)?c:(r.code||'');
+    if(!r.code) r.code=nextCode(L,r.section); normRates(L);
+    Object.assign(it,{code:r.code,section:r.section,desc:r.desc,unit:r.unit,rate:r.rate});
+    S._lib=null; await persistSettings(); closeModal(); touched(true); toast(isNew?'Saved to your price library as '+r.code:'Library rate updated for '+r.code); return }
+  if(a==='import-rates'){ modal(importRatesModal()); setTimeout(()=>{const t=document.getElementById('rin'); t&&t.focus()},50); }
+  if(a==='rates-go'){ const err=document.getElementById('rerr'); let rows;
+    try{ rows=parseRates(document.getElementById('rin').value); if(!rows.length) throw new Error('none'); }
+    catch(x){ err.textContent=x.message==='nohead'?'Could not find the header row. Copy the header row too (Item, Unit, Labour, Materials).':'No items found. Paste the rows from your spreadsheet, including the header row.'; err.hidden=false; return }
+    const L=document.getElementById('rreplace').checked?[]:S.settings.rates; let add=0,upd=0;
+    rows.forEach(x=>{ let r=(x.code&&L.find(y=>String(y.code).toUpperCase()===x.code))||L.find(y=>y.desc.toLowerCase()===x.desc.toLowerCase());
+      if(!r){ r={id:uid(),code:'',section:x.section,desc:x.desc,unit:x.unit,labour:0,materials:0,rate:0}; L.push(r); add++; } else upd++;
+      r.section=x.section||r.section; r.desc=x.desc; r.unit=x.unit||r.unit; if(x.code&&!L.some(y=>y!==r&&String(y.code).toUpperCase()===x.code)) r.code=x.code;
+      if(x.labour!==null||x.materials!==null){ r.labour=x.labour||0; r.materials=x.materials||0; } else if(x.total!==null){ r.labour=x.total; r.materials=0; } });
+    S.settings.rates=L; normRates(L); S._codesDirty=false; await persistSettings(); closeModal(); render(); toast(add+' added, '+upd+' updated in your price library'); }
+  if(a==='gpt-setup'){ if(S._codesDirty){ S._codesDirty=false; await persistSettings(); } modal(gptSetupModal(false)); }
+  if(a==='gpt-copy'){ const t=document.getElementById('gptsetup'); try{ await navigator.clipboard.writeText(t.value); toast('Copied. Paste it into ChatGPT.'); closeModal(); }catch(e){ t.focus(); t.select(); toast('Select all and copy the text.'); } }
 });
 async function flushEdit(){ if(S.view==='edit'&&S.editing&&S.docs.some(x=>x.id===S.editing.id)){ await save(true); } }
 
@@ -835,9 +965,14 @@ document.addEventListener('input',e=>{
   if(S.view==='edit'&&S.editing){
     if(t.dataset.k){ let v=t.type==='checkbox'?t.checked:t.value; if(t.type==='number')v=v===''?'':+v; setPath(S.editing,t.dataset.k,v); touched(); return }
     if(t.dataset.ik){ const row=t.closest('[data-i]'), i=+row.dataset.i, it=S.editing.items[i]; it[t.dataset.ik]=t.type==='number'?(t.value===''?'':+t.value):t.value;
-      const amt=document.querySelector(`[data-amt="${i}"]`); if(amt) amt.textContent=money((+it.qty||0)*(+it.rate||0)); touched(); return }
+      const amt=document.querySelector(`[data-amt="${i}"]`); if(amt) amt.textContent=money((+it.qty||0)*(+it.rate||0)); const sl=document.querySelector(`[data-lib-slot="${i}"]`); if(sl) sl.innerHTML=libBtn(it,i); touched(); return }
+  if(t.id==='ls-l'||t.id==='ls-m'){ const o=document.getElementById('ls-t'); if(o) o.textContent=money((+document.getElementById('ls-l').value||0)+(+document.getElementById('ls-m').value||0)); return }
   }
-  if(S.view==='rates'&&t.dataset.rk){ const i=+t.closest('[data-r]').dataset.r; S.settings.rates[i][t.dataset.rk]=t.dataset.rk==='rate'?(+t.value||0):t.value; clearTimeout(setT); setT=setTimeout(persistSettings,700); return }
+  if(t.id==='rq'){ const q=t.value.toLowerCase().trim(); document.querySelectorAll('.rates [data-r]').forEach(row=>{ row.hidden=!!q&&!row.dataset.q.includes(q); }); return }
+  if(S.view==='rates'&&t.dataset.rk){ const i=+t.closest('[data-r]').dataset.r, r=S.settings.rates[i], k=t.dataset.rk;
+    if(k==='labour'||k==='materials'){ r[k]=+t.value||0; r.rate=Math.round((r.labour+r.materials)*100)/100; const c=document.querySelector(`[data-rt="${i}"]`); if(c) c.textContent=money(r.rate); }
+    else r[k]=k==='code'?t.value.toUpperCase().trim():t.value;
+    clearTimeout(setT); setT=setTimeout(persistSettings,700); return }
   if(S.view==='settings'&&t.dataset.sk){ const k=t.dataset.sk; let v=t.type==='checkbox'?t.checked:t.value; if(['vatRate','payDays','validity','depositPct'].includes(k))v=+v||0; setPath(S.settings,k,v); clearTimeout(setT); setT=setTimeout(persistSettings,700); }
 });
 document.addEventListener('change',e=>{ if(e.target.matches('#status,select[data-k],input[type=checkbox][data-k],select[data-ik]')) e.target.dispatchEvent(new Event('input',{bubbles:true})) ;});
@@ -848,10 +983,12 @@ document.addEventListener('change',async e=>{ if(e.target.id!=='importfile'||!e.
     toast('Restored '+data.docs.length+' documents'); render();
   }catch(err){ toast('That file is not a Hiprobuild backup. Choose the .json file you downloaded.'); }
   e.target.value=''; });
+document.addEventListener('change',e=>{ if(e.target.id==='gptprices'){ document.getElementById('gptsetup').value=gptSetupText(e.target.checked); } });
+document.addEventListener('change',async e=>{ if(e.target.id!=='ratefile'||!e.target.files[0])return; document.getElementById('rin').value=await e.target.files[0].text(); e.target.value=''; });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 
 /* ---------- boot ---------- */
-function ingest(settings,docs){ if(settings) S.settings=Object.assign(structuredClone(DEFAULT_SETTINGS),settings); if(docs) S.docs=docs; applyBrand(); }
+function ingest(settings,docs){ if(settings){ S.settings=Object.assign(structuredClone(DEFAULT_SETTINGS),settings); if(normRates(S.settings.rates)) S._codesDirty=true; } if(docs) S.docs=docs; applyBrand(); }
 document.getElementById('loginform').addEventListener('submit',async e=>{
   e.preventDefault(); const btn=e.target.querySelector('button'), err=document.getElementById('loginerr');
   err.hidden=true; btn.disabled=true; btn.textContent='Signing in…';
