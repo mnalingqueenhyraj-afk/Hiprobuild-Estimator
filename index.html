@@ -342,7 +342,7 @@ const TEMPLATES={
 const DEFAULT_SETTINGS={
  company:{name:'Hiprobuild Contracts Ltd',tagline:'One Contractor. Multiple Trades. Fully Coordinated Renovations.',address:'[Business address]\nEdinburgh',phone:'[Phone number]',email:'[Email address]',web:'www.hipro-build.co.uk',companyNo:'[Company number]',vatNo:'[VAT number]'},
  bank:{name:'Hiprobuild Contracts Ltd',sort:'[Sort code]',acc:'[Account number]'},
- vatRegistered:true,vatRate:20,validity:30,payDays:14,depositPct:30,brand:'blue',
+ vatRegistered:false,vatRate:20,validity:30,payDays:14,depositPct:30,brand:'blue',
  quoteTerms:'Timelines are agreed at acceptance and depend on scope, building warrant approval and material lead times.\nStructural work is carried out in line with approved drawings and building warrant requirements. No structural work starts before approval.\nWork is carried out by our team and trusted specialist subcontractors.\nCovered by public liability insurance and our workmanship guarantee [guarantee terms to be confirmed].',
  exclusions:'Building warrant fees and structural engineer\'s fees are payable by the client unless listed above.\nAny gas work is carried out by a Gas Safe registered engineer and is quoted separately.\nKitchen units, appliances, sanitaryware and tiles are client-supplied unless listed above.\nUnforeseen defects found once work starts (e.g. hidden rot or wiring) will be discussed and agreed before any extra work.',
  invoiceTerms:'Payment by bank transfer within the due date shown. Please quote the invoice number as your payment reference.',
@@ -478,7 +478,7 @@ function vDash(){
   const month=today().slice(0,7), received=r.filter(d=>(d.date||'').startsWith(month)).reduce((a,d)=>a+(+d.amount||0),0);
   const decided=won.length+q.filter(d=>d.status==='declined').length;
   return `<div class="head"><div><div class="eyebrow">${esc(S.settings.company.name)} · <span data-sync></span></div><h1>Quotes, invoices &amp; receipts</h1></div>
-  <div class="row"><button class="btn" data-act="new-invoice">New invoice</button><button class="btn primary" data-act="new-quote">New quote</button></div></div>
+  <div class="row"><button class="btn" data-act="import-gpt">Import from ChatGPT</button><button class="btn" data-act="new-invoice">New invoice</button><button class="btn primary" data-act="new-quote">New quote</button></div></div>
   <div class="kpis">
    <div class="card kpi lead"><div class="l">Quotes awaiting a decision</div><div class="v">${money(open.reduce((a,d)=>a+calc(d).total,0))}</div><div class="s">${open.length} sent quote${open.length===1?'':'s'}</div></div>
    <div class="card kpi"><div class="l">Won work</div><div class="v">${money(won.reduce((a,d)=>a+calc(d).total,0))}</div><div class="s">${decided?Math.round(won.length/decided*100)+'% of decided quotes accepted':'No decisions yet'}</div></div>
@@ -526,7 +526,7 @@ function vEdit(){
       <div class="f"><label for="caddr">Billing address</label><input id="caddr" data-k="client.address" value="${esc(d.client.address)}"></div>
       <div class="f wide"><label for="site">Site address (if different)</label><input id="site" data-k="site" placeholder="e.g. 2F1, tenement flat, Leith" value="${esc(d.site)}"></div>
      </div></div>
-    ${isR?'':`<div class="card sec"><div class="sec-h"><h2>Scope &amp; pricing</h2><div class="row"><button class="btn sm" data-act="pick">Add from rate book</button><button class="btn sm" data-act="add-line">Add custom line</button></div></div>
+    ${isR?'':`<div class="card sec"><div class="sec-h"><h2>Scope &amp; pricing</h2><div class="row"><button class="btn sm" data-act="import-gpt">Paste from ChatGPT</button><button class="btn sm" data-act="pick">Add from rate book</button><button class="btn sm" data-act="add-line">Add custom line</button></div></div>
      ${d.type==='quote'?`<div class="row"><span class="sub">Quick estimate:</span><div class="tpl">${Object.keys(TEMPLATES).map(k=>`<button class="chip" data-tpl="${esc(k)}">${esc(k)}</button>`).join('')}</div></div>`:''}
      <div class="items" id="items"></div>
      <div class="row" style="justify-content:space-between;align-items:flex-start;gap:20px">
@@ -608,7 +608,7 @@ function paperHtml(d){
      </div>
      <div class="p-tot"><div><span>Subtotal</span><span>${money(c.sub)}</span></div>
       ${c.discount?`<div><span>Discount</span><span>−${money(c.discount)}</span></div><div><span>Net</span><span>${money(c.net)}</span></div>`:''}
-      ${st.vatRegistered?`<div><span>${d.reverseCharge?'VAT: reverse charge':'VAT @ '+esc(st.vatRate)+'%'}</span><span>${money(c.vat)}</span></div>`:''}
+      ${st.vatRegistered?`<div><span>${d.reverseCharge?'VAT: reverse charge':'VAT @ '+esc(st.vatRate)+'%'}</span><span>${money(c.vat)}</span></div>`:`<div><span>VAT</span><span>Not charged</span></div>`}
       <div class="grand"><span>${d.type==='quote'?'Total quoted':'Total'}</span><span>${money(c.total)}</span></div>
       ${d.type==='quote'&&+d.depositPct?`<div class="due"><span>Deposit to confirm (${esc(d.depositPct)}%)</span><span>${money(c.total*d.depositPct/100)}</span></div>`:''}
       ${d.type==='invoice'?`${c.paid?`<div><span>Paid</span><span>−${money(c.paid)}</span></div>`:''}<div class="due"><span>Amount due by ${fdate(d.due)}</span><span>${money(c.due)}</span></div>`:''}
@@ -736,6 +736,36 @@ function receiptModal(){
    <div class="f"><label for="rref">Reference</label><input id="rref" value="${esc(inv.number)}"></div></div>
    <div class="row" style="justify-content:flex-end"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" data-act="make-receipt">Issue receipt</button></div>`;
 }
+function gptModal(){
+  const inEd=S.view==='edit'&&S.editing&&S.editing.type!=='receipt';
+  return `<div class="sec-h"><h2>${inEd?'Paste from ChatGPT':'Import from ChatGPT'}</h2><button class="btn ghost sm" data-close>Close</button></div>
+   <p class="sub" style="margin:0">In ChatGPT, type <b>export</b>, tap <b>Copy</b> on the code block, then paste it here.${inEd?' The lines are added to this '+TYPES[S.editing.type].short.toLowerCase()+'.':' A new draft opens for you to check before saving.'}</p>
+   <div class="f"><label for="gptin">ChatGPT export</label><textarea id="gptin" style="min-height:200px;font-family:ui-monospace,Menlo,monospace;font-size:13px" placeholder='{ "type": "quote", "client": { ... }, "items": [ ... ] }'></textarea></div>
+   <div class="note" id="gpterr" hidden></div>
+   <div class="row" style="justify-content:flex-end"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" data-act="gpt-go">${inEd?'Add lines':'Create draft'}</button></div>`;
+}
+function parseGpt(txt){
+  txt=String(txt||'').replace(/```(json)?/gi,'').replace(/[“”]/g,'"').replace(/[‘’]/g,"'");
+  const a=txt.indexOf('{'), b=txt.lastIndexOf('}'); if(a<0||b<=a) throw new Error('none');
+  let j; try{ j=JSON.parse(txt.slice(a,b+1)); }catch(e){ j=JSON.parse(txt.slice(a,b+1).replace(/,\s*([}\]])/g,'$1')); }
+  const num=v=>{ const n=parseFloat(String(v??'').replace(/[£,\s]/g,'')); return isFinite(n)?n:0 };
+  const unitMap={h:'hr',hr:'hr',hrs:'hr',hour:'hr',hours:'hr',day:'day',days:'day',m:'m',lm:'m',metre:'m',metres:'m',meter:'m',m2:'m²','m²':'m²',sqm:'m²',nr:'nr',no:'nr',each:'nr',lot:'lot',item:'item',items:'item'};
+  const items=(Array.isArray(j.items)?j.items:[]).map(it=>({
+    section:String(it.section||it.trade||'').trim(),
+    desc:String(it.description||it.desc||it.name||'').trim(),
+    qty:num(it.qty??it.quantity??1)||1,
+    unit:unitMap[String(it.unit||'item').toLowerCase().trim()]||'item',
+    rate:num(it.rate??it.price??it.unit_price??it.amount)
+  })).filter(it=>it.desc||it.rate);
+  const c=j.client||{}, pays=Array.isArray(j.payments_received)?j.payments_received.filter(p=>num(p.amount)):[];
+  let notes=String(j.notes||'').trim();
+  if(pays.length) notes+=(notes?'\n\n':'')+'Payments received to date:\n'+pays.map(p=>`${p.date?fdate(p.date)+': ':''}${money(num(p.amount))}${p.note?' ('+p.note+')':''}`).join('\n');
+  const t=String(j.project_title||j.title||'');
+  const svc=SERVICES.find(s=>s.toLowerCase()===String(j.service||'').toLowerCase())
+    || (/open.?plan/i.test(t)?SERVICES[0]:/wall|structural|steel|beam/i.test(t)?SERVICES[1]:/bathroom/i.test(t)?SERVICES[3]:/sash|window/i.test(t)?SERVICES[6]:/insulat/i.test(t)?SERVICES[7]:/kitchen/i.test(t)?SERVICES[2]:/refurb/i.test(t)?SERVICES[4]:/joinery|carpent/i.test(t)?SERVICES[5]:'');
+  return {type:/invoice/i.test(j.type||'')?'invoice':'quote',client:{name:String(c.name||''),email:String(c.email||''),phone:String(c.phone||''),address:String(c.address||'')},
+    site:String(j.site_address||j.site||''),title:t,service:svc,items,notes,depositPct:j.deposit_percent===undefined||j.deposit_percent===''?null:num(j.deposit_percent)};
+}
 function fromParent(p,type,extra){ return blank(type,Object.assign({parentId:p.id,client:structuredClone(p.client),site:p.site,service:p.service,title:p.title,vat:p.vat,reverseCharge:p.reverseCharge},extra)); }
 
 /* ---------- events ---------- */
@@ -769,6 +799,19 @@ document.addEventListener('click',async e=>{
   if(a==='new-quote'){ if(S.view==='edit')await flushEdit(); newQuote(); }
   if(a==='new-invoice'){ S.editing=blank('invoice'); S.view='edit'; render(); }
   if(a==='save') save();
+  if(a==='import-gpt'){ modal(gptModal()); setTimeout(()=>{const t=document.getElementById('gptin'); t&&t.focus()},50); }
+  if(a==='gpt-go'){ const err=document.getElementById('gpterr'); let g;
+    try{ g=parseGpt(document.getElementById('gptin').value); if(!g.items.length) throw new Error('noitems'); }
+    catch(x){ err.textContent=x.message==='noitems'?'No price lines found. In ChatGPT, type "export" again and paste the whole code block.':'That doesn\'t look like a ChatGPT export. In ChatGPT, type "export", tap Copy on the code block, then paste it here.'; err.hidden=false; return }
+    const ed=S.view==='edit'&&S.editing&&S.editing.type!=='receipt';
+    const d=ed?S.editing:blank(g.type);
+    d.items.push(...g.items);
+    ['name','email','phone','address'].forEach(k=>{ if(!d.client[k]&&g.client[k]) d.client[k]=g.client[k] });
+    if(!d.site&&g.site) d.site=g.site; if(!d.title&&g.title) d.title=g.title; if(g.service&&!ed) d.service=g.service;
+    if(g.notes) d.notes=d.notes?d.notes+'\n\n'+g.notes:g.notes;
+    if(d.type==='quote'&&g.depositPct!==null&&!ed) d.depositPct=g.depositPct;
+    closeModal(); if(!ed){ S.editing=d; S.view='edit'; S.tab='edit'; } render(); touched();
+    toast(g.items.length+' line'+(g.items.length===1?'':'s')+' imported. Check the prices, then tap Save.'); }
   if(a==='add-line'){ S.editing.items.push({section:'',desc:'',qty:1,unit:'item',rate:0}); touched(true); const ins=document.querySelectorAll('#items [data-ik="desc"]'); ins[ins.length-1]&&ins[ins.length-1].focus(); }
   if(a==='pick'){ modal(pickModal('')); document.getElementById('pq').focus(); }
   if(a==='pdf') makePdf();
