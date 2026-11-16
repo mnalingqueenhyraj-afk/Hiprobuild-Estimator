@@ -780,12 +780,13 @@ function fillLetter(d){ const t=(S.settings.doc||{}).letter||DEFAULT_SETTINGS.do
   const name=d.client.name||'[Client name]';
   return t.replace(/\{client\}/g,name).replace(/\{site\}/g,d.site||d.client.address||'[site address]').replace(/\{project\}/g,(d.title||d.service||'the works').replace(/^./,c=>c.toLowerCase())).replace(/\{date\}/g,fdate(d.date)); }
 const STARS=n=>{ const r=Math.max(0,Math.min(5,Math.round(+n||0))); return '★'.repeat(r)+'☆'.repeat(5-r); };
+function qReg(co){ return co.companyNo?`Company no. ${esc(co.companyNo)}<i>|</i>Registered in Scotland`:''; }
 function qContact(co){ return [co.phone,co.email,co.web].filter(Boolean).map(esc).join('<i>|</i>'); }
 function qGroups(d){ const c=calc(d), groups=[]; c.lines.forEach(l=>{ const k=String(l.section||'').trim()||'Works'; let g=groups.find(x=>x.k.toLowerCase()===k.toLowerCase()); if(!g) groups.push(g={k,items:[],sum:0}); g.items.push(l); g.sum+=l.amount; }); return {c,groups}; }
 function qFoot(d,n,N){ const co=S.settings.company;
   return `<div class="q-foot"><span><b>${esc(co.name)}</b> | Company no. ${esc(co.companyNo)} | Registered in Scotland${S.settings.vatRegistered?' | VAT '+esc(co.vatNo):''}</span><span>${esc(d.number)} | ${esc((d.site||d.client.address||'').split('\n')[0])}${(d.site||d.client.address)?' | ':''}Page ${n} of ${N}</span></div>`; }
 function qSheet(d,body,n,N){ const co=S.settings.company;
-  return `<div class="q-sheet"><div class="q-head"><img src="${LOGO}" alt="${esc(co.name)}"><div><b>${esc(co.name)}</b><span>${qContact(co)}</span></div></div><div class="q-rule"></div><div class="q-body">${body}</div>${qFoot(d,n,N)}</div>`; }
+  return `<div class="q-sheet"><div class="q-head"><img src="${LOGO}" alt="${esc(co.name)}"><div><b>${esc(co.name)}</b><span>${qContact(co)}</span>${co.companyNo?`<span>${qReg(co)}</span>`:''}</div></div><div class="q-rule"></div><div class="q-body">${body}</div>${qFoot(d,n,N)}</div>`; }
 function qCover(d,N){ const st=S.settings, co=st.company, x=st.doc||{}, {groups}=qGroups(d);
   const b=[];
   b.push(`<div class="q-badge dk"><b>All trades</b><small>One contractor</small><em>Fully coordinated renovations</em></div>`);
@@ -795,7 +796,7 @@ function qCover(d,N){ const st=S.settings, co=st.company, x=st.doc||{}, {groups}
   if(x.guarantee) b.push(`<div class="q-badge"><b>Guaranteed</b><small>Workmanship guarantee</small><em>${esc(x.guarantee)}</em></div>`);
   b.push(`<div class="q-badge"><b>Local</b><small>Edinburgh &amp; the Lothians</small></div>`);
   const trades=groups.map(g=>g.k).filter(k=>k.toLowerCase()!=='works');
-  return `<div class="q-sheet"><div class="q-cband"><img src="${LOGO}" alt="${esc(co.name)}"><div class="q-cc">${qContact(co)}</div>${co.address?`<div class="q-cc" style="margin-top:4px;color:#C9D1D9">${esc(String(co.address).replace(/\n/g,', '))}</div>`:''}</div><div class="q-rule"></div>
+  return `<div class="q-sheet"><div class="q-cband"><img src="${LOGO}" alt="${esc(co.name)}"><div class="q-cc">${qContact(co)}</div>${co.address?`<div class="q-cc" style="margin-top:4px;color:#C9D1D9">${esc(String(co.address).replace(/\n/g,', '))}</div>`:''}${co.companyNo?`<div class="q-cc" style="margin-top:4px;color:#C9D1D9">${qReg(co)}</div>`:''}</div><div class="q-rule"></div>
    <div class="q-cbody"><div class="q-kick">${esc(d.service||'Renovation')}</div><div class="q-big">${esc(docWord(d).toUpperCase())}</div><div class="q-bar"></div>
     <div class="q-cli">${esc(d.client.name||'Client name')}</div><div class="q-site">${esc(d.site||d.client.address||'Site address')}</div>
     ${d.title?`<div class="q-proj">${esc(d.title)}</div>`:''}
