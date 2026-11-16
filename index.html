@@ -230,6 +230,82 @@ table.p-items{width:100%;border-collapse:collapse}
 .stamp{font-family:var(--f-display);font-weight:800;letter-spacing:.24em;font-size:15px;color:var(--paper-accent);border:2.5px solid var(--paper-accent);padding:6px 12px;transform:rotate(-4deg);display:inline-block}
 .p-foot{padding:14px 44px 22px;border-top:1px solid var(--paper-line);display:flex;justify-content:space-between;gap:16px;font-size:9.5px;color:var(--paper-muted)}
 .p-foot b{color:var(--paper-ink)}
+/* estimate document (quotes): real A4 pages with header + footer on each */
+.pages{display:flex;flex-direction:column;gap:18px;width:794px}
+.q-sheet{width:794px;height:1123px;background:#fff;color:var(--paper-ink);font-family:var(--f-body);font-size:11.5px;line-height:1.5;display:flex;flex-direction:column;overflow:hidden}
+.q-head{background:var(--band);color:#F2F4F6;display:flex;align-items:center;gap:16px;padding:14px 40px;flex:none}
+.q-head img{height:46px;width:auto;display:block}
+.q-head div{margin-left:auto;text-align:right}
+.q-head b{display:block;font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.q-head span{display:block;font-size:9px;color:var(--band-hi)}
+.q-head i,.q-cc i{font-style:normal;opacity:.55;margin:0 6px}
+.q-rule{height:4px;flex:none;background:linear-gradient(90deg,var(--band-hi),var(--metal-l) 60%,var(--paper-line))}
+.q-body{flex:1;min-height:0;overflow:hidden;padding:24px 40px 10px}
+.q-body>*+*{margin-top:16px}
+.q-foot{flex:none;margin:0 40px;padding:9px 0 16px;border-top:2px solid var(--band-hi);display:flex;justify-content:space-between;gap:12px;font-size:8.5px;color:var(--paper-muted)}
+.q-foot b{color:var(--paper-ink)}
+.q-title{text-align:center}
+.q-title h2{font-family:var(--f-display);font-weight:800;font-size:19px;letter-spacing:.12em;text-transform:uppercase;color:var(--band);margin:0}
+.q-title p{margin:3px 0 0;color:var(--paper-accent);font-size:11px}
+.q-cband{background:var(--band);color:#F2F4F6;text-align:center;padding:34px 40px 22px;flex:none}
+.q-cband img{height:122px;width:auto;display:block;margin:0 auto}
+.q-cc{margin-top:14px;font-size:10px;color:var(--band-hi)}
+.q-cbody{flex:1;min-height:0;padding:40px 56px 22px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.q-kick{font-family:var(--f-display);font-weight:700;font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-accent)}
+.q-big{font-family:var(--f-display);font-weight:800;font-size:58px;letter-spacing:.14em;color:var(--band);line-height:1.05;margin-top:4px}
+.q-bar{width:90px;height:4px;background:var(--band-hi);margin:18px auto}
+.q-cli{font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
+.q-site{color:var(--paper-muted);font-size:12.5px;margin-top:4px;white-space:pre-line}
+.q-proj{font-size:14px;margin-top:14px;max-width:560px;font-weight:600}
+.q-meta{margin-top:10px;font-size:11px;color:var(--paper-muted)}
+.q-meta b{color:var(--paper-ink);font-weight:600}
+.q-trades{margin-top:24px;padding:9px 16px;border-top:1px solid var(--paper-line);border-bottom:1px solid var(--paper-line);font-size:9.5px;font-weight:700;letter-spacing:.16em;color:var(--band);text-transform:uppercase}
+.q-badges{margin-top:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;width:100%}
+.q-badge{flex:0 1 150px;border:1.5px solid var(--paper-line);border-radius:10px;padding:12px 10px 10px;text-align:center}
+.q-badge b{display:block;font-family:var(--f-display);font-size:19px;font-weight:800;color:var(--band);line-height:1.15}
+.q-badge .st{display:block;color:#E8A400;font-size:12px;letter-spacing:1px}
+.q-badge small{display:block;font-size:8px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--paper-accent);margin-top:4px}
+.q-badge em{display:block;font-style:normal;font-size:8.5px;color:var(--paper-muted);margin-top:2px;word-break:break-word}
+.q-badge.dk{background:var(--band);border-color:var(--band)}
+.q-badge.dk b{color:#fff}.q-badge.dk small{color:var(--band-hi)}.q-badge.dk em{color:#C9D1D9}
+.q-prep{margin-top:20px;font-size:11px;color:var(--paper-muted)}
+.q-prep b{color:var(--paper-ink)}
+.q-kv{width:100%;border-collapse:collapse}
+.q-kv td{padding:4px 0;vertical-align:top;white-space:pre-line}
+.q-kv td:first-child{width:120px;font-weight:700;color:var(--band)}
+.q-p{margin-left:0;margin-right:0;margin-bottom:0;white-space:pre-line}
+.q-sig b{font-family:var(--f-display)}
+.q-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.q-card{border-left:4px solid var(--band-hi);background:var(--paper-soft);padding:10px 12px}
+.q-card.w{grid-column:1/-1}
+.q-card h4{margin:0 0 3px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-accent)}
+.q-card p{margin:0;white-space:pre-line}
+.q-banner{background:var(--band);color:#F2F4F6;text-align:center;padding:12px 16px;font-weight:600;font-size:11.5px}
+.q-h3{font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--band);margin:0 0 6px;padding-bottom:5px;border-bottom:2px solid var(--band-hi)}
+.q-sec{background:var(--band);color:#fff;font-family:var(--f-display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:8px 12px;display:flex;justify-content:space-between;gap:12px}
+.q-sec span{font-family:var(--f-mono);letter-spacing:0;color:var(--band-hi)}
+.q-tbl{width:100%;border-collapse:collapse}
+.q-tbl td{padding:8px 6px;border-bottom:1px solid var(--paper-line);vertical-align:top}
+.q-tbl th{background:var(--band);color:#fff;text-align:left;font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:7px 8px}
+.q-tbl .no{width:36px;font-weight:700;color:var(--band);font-family:var(--f-mono);font-size:10.5px}
+.q-tbl .am{width:100px;text-align:right;font-weight:700;font-family:var(--f-mono);white-space:nowrap}
+.q-tbl .r{text-align:right;white-space:nowrap}
+.q-tbl b{font-weight:600}
+.q-tbl p{margin:2px 0 0;font-size:10.5px;white-space:pre-line}
+.q-tbl small{display:block;color:var(--paper-muted);font-family:var(--f-mono);font-size:9.5px;margin-top:2px}
+.q-tbl tr.sub td{background:var(--paper-soft);font-weight:700;border-bottom:0}
+.q-tbl tr.tot td{background:var(--band);color:#fff;font-weight:800;font-size:13px;border:0}
+.q-tbl tr.tot td.am{color:var(--band-hi)}
+.q-tbl.list td{padding:5px 6px;font-size:10.5px}
+.q-tgrp{font-family:var(--f-display);font-weight:800;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-accent);margin:2px 0 4px}
+.q-tbl.list p{margin-top:5px}
+.q-ln{display:inline-block;width:150px;border-bottom:1px solid var(--paper-ink);height:12px;vertical-align:baseline}
+.q-fill{border-bottom:1px solid var(--paper-ink);height:26px;position:relative;margin-top:4px}
+.q-fill[data-l]::before{content:attr(data-l) ":";position:absolute;left:0;bottom:3px;font-size:10px;color:var(--paper-muted)}
+.q-note{font-size:10px;color:var(--paper-muted);font-style:italic;background:var(--paper-soft);padding:8px 10px;margin-left:0;margin-right:0;margin-bottom:0}
+.q-signs{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:34px}
+.q-signs div{border-top:1px solid var(--paper-ink);padding-top:6px;font-size:10px;color:var(--paper-muted)}
+.q-signs b{display:block;color:var(--paper-ink)}
 .ex-flag{font-family:var(--f-mono);font-size:10px;background:var(--warn-bg);color:var(--warn);padding:2px 6px;border-radius:4px}
 
 @media (max-width:1100px){ .editor{grid-template-columns:minmax(0,1fr)} .stickyp{position:static} .kpis{grid-template-columns:repeat(2,minmax(0,1fr))} }
@@ -379,15 +455,28 @@ const TEMPLATES={
 };
 
 const DEFAULT_SETTINGS={
- company:{name:'Hiprobuild Contracts Ltd',tagline:'One Contractor. Multiple Trades. Fully Coordinated Renovations.',address:'[Business address]\nEdinburgh',phone:'[Phone number]',email:'[Email address]',web:'www.hipro-build.co.uk',companyNo:'[Company number]',vatNo:'[VAT number]'},
- bank:{name:'Hiprobuild Contracts Ltd',sort:'[Sort code]',acc:'[Account number]'},
- vatRegistered:false,vatRate:20,validity:30,payDays:14,depositPct:30,brand:'blue',
- quoteTerms:'Timelines are agreed at acceptance and depend on scope, building warrant approval and material lead times.\nStructural work is carried out in line with approved drawings and building warrant requirements. No structural work starts before approval.\nWork is carried out by our team and trusted specialist subcontractors.\nCovered by public liability insurance and our workmanship guarantee [guarantee terms to be confirmed].',
+ company:{name:'Hiprobuild Contracts Ltd',tagline:'One Contractor. Multiple Trades. Fully Coordinated Renovations.',address:'104A Gorgie Road\nEdinburgh, EH11 2NP\nUnited Kingdom',phone:'07453 653041',email:'hiprobuild@gmail.com',web:'www.hipro-build.co.uk',companyNo:'SC728738',vatNo:'[VAT number]'},
+ bank:{name:'Hiprobuild Contracts Ltd',sort:'04-06-05',acc:'18762471'},
+ vatRegistered:false,vatRate:20,validity:30,payDays:14,depositPct:20,brand:'blue',
+ quoteTerms:"## Contract basis and pricing\nOur agreement: These terms apply to domestic refurbishment, structural alterations, kitchens, bathrooms, joinery, windows, flooring and associated works carried out by Hiprobuild Contracts Ltd (we/us). They must be supplied before the client accepts our quotation. They apply to new contracts and do not retrospectively change existing agreements. The accepted quotation, identified drawings, scope, exclusions, payment schedule and agreed written variations form the contract. Project-specific terms expressly agreed in writing take priority over these general terms; statutory consumer rights always remain protected.\nScope and drawing revisions: Our price covers only the works expressly included and is based on the architectural drawings, structural engineer drawings, calculations, specifications and revision numbers identified in the quotation. The client must provide the complete current information and notify us promptly of every revision, including instructions from their architect, engineer, kitchen designer, supplier or building standards officer. Sending a revision does not mean its additional work is included in our original price.\nChanges after quotation: Changes to layouts, opening sizes, beams, posts, bearings, foundations, connections, temporary works, fire protection, services, window or glazing specifications, kitchen layouts, materials or finishes may require repricing. Additional surveys, setting out, fabrication, labour, materials, professional input, abortive work, cancellation fees, return visits, delivery and programme effects caused by a change will be assessed as a variation. Any savings or omissions will also be identified, allowing for unavoidable costs already committed. Rectifying our own errors or defective work is not a chargeable client variation.\nQuotations and estimates: A quotation is a fixed price for its stated scope and assumptions, except for specifically identified provisional sums, allowances and agreed variations. An estimate is an informed forecast and will be clearly labelled. Unless a different period is stated, our offer is valid for 30 calendar days, subject to the shorter steel validity in clause 5. We will confirm availability and a start date separately. Supplier price changes do not give us an unrestricted right to increase an accepted fixed price. Any express price-adjustment mechanism must be identified and agreed before acceptance. We charge no VAT unless legally required; the quotation states the applicable VAT treatment. Any later legally required tax change will be explained and supported.\n## Steel prices and additional work\nSteel and other supplier validity: The steel supply and fabrication element of a structural quotation is valid for 10 working days from the quotation date, unless it states an earlier supplier expiry date, for example seven working days. Working days mean Monday to Friday excluding Scottish bank holidays. This covers the specified steel sections, cutting to size and the fabrication, plates, drilling, welding, coatings and delivery expressly included. Steel prices can change frequently in either direction; a historic supplier price cannot be assumed to remain available.\n+ Before acceptance or where an expressly agreed steel revalidation allowance applies, we will reconfirm the price with our steel fabrication contractor before placing the order. We will notify the client of the revised supplier price and any effect on our agreed handling or delivery charges, and obtain written agreement before ordering. Any reduction will be reflected on the same basis as an increase. Acceptance within the validity period does not by itself place a supplier order: final dimensions, approved drawings and the agreed procurement payment must also be available. An accepted fixed steel price remains binding unless the contract expressly reserved revalidation or the client agrees a variation. If agreement is not reached, the affected purchase will be held while options and programme implications are discussed.\nWritten variation procedure: Before additional work proceeds, we will issue a description of the change, its reason, the added price or credit and any effect on timing and payment stages. The client or their expressly authorised representative must approve it in writing, including email or a clearly recorded WhatsApp approval. Where a fixed price cannot reasonably be established, we will agree labour rates, material charges, any mark-up and a spending limit first. We will seek further approval before exceeding that limit. An instruction from a designer is not client authority to spend unless that authority has been confirmed.\n+ Approved extras will appear separately on the next agreed stage invoice or on a variation invoice, showing the revised contract total. Revising an invoice to record agreed extras does not itself attract a fee. Administrative corrections, including our own invoicing errors, are free of charge. If a change is not approved, we may pause the affected work without treating silence as consent. Unaffected work will continue where practical and safe.\nHidden conditions and provisional sums: Our assessment is normally limited to reasonably accessible, visible conditions. Opening up may reveal rot, damp, damaged joists, inadequate bearings, defective wiring or plumbing, unsuitable substrates, concealed services, asbestos or other issues. We will explain the finding, provide photographs where practical and propose costs and programme changes before remedial work. If immediate action is necessary to prevent injury or serious damage, we may carry out only the minimum reasonable making-safe work, contact the client promptly and document any reasonable charge. Provisional sums and allowances will be identified and reconciled against the agreed actual scope, pricing basis and supporting records; unused amounts will be credited.\n## Structural work and site arrangements\nDesign approvals and structural safety: Unless expressly included, architectural design, engineering calculations, SER certification, planning permission, listed building consent, building warrants, amendments and statutory fees are excluded. The quotation must identify who will obtain each required approval and arrange inspections. The client must provide permissions for access and work affecting common property or neighbouring ownership. We will not knowingly proceed with non-compliant work or treat client approval as a substitute for statutory permission.\n+ Structural work will follow the agreed current engineer design and applicable approvals. No load-bearing wall, beam, post, bearing or foundation arrangement may be changed without the responsible engineer confirming the change and any required approval being obtained. Temporary support and construction sequencing must be suitable for the work; specialist design will be included or separately agreed where needed. We will stop affected work if site conditions conflict with the design, notify the client and seek clarification. We remain responsible for our workmanship and any design obligations expressly undertaken by us.\nSite access and facilities: The client must provide agreed safe access, working hours, electricity, water, welfare arrangements and a suitable storage area, or tell us before quotation if these are unavailable. Please identify access restrictions, stairs, lift limits, loading restrictions and communal rules. Upper-floor carrying, restricted access, additional protection, lifting equipment, scaffolding and specialist deliveries are included only to the extent stated. If conditions differ materially from the agreed basis, any necessary additional arrangements will be priced and approved before proceeding.\nParking deliveries and waste: Parking charges and parking or skip permits are excluded unless expressly included. Clients may arrange suitable lawful visitor permits. Any other parking charges must be agreed in advance or covered by an agreed allowance supported by records. Delivery, offloading, carrying and waste removal are limited to the quantities and arrangements stated in the quotation. Additional uplifts or specialist disposal require agreement. We will manage waste from our works appropriately; waste from other contractors and hazardous waste are excluded unless expressly agreed.\nProtection existing finishes and neighbours: We will take reasonable care to protect the property and agreed access routes. The client should remove valuables and clear the work area before starting. Renovation can create noise, vibration and dust despite reasonable protection. We will explain foreseeable disruption and any planned water, power or heating interruptions. Making good is limited to the scope stated, but this does not exclude responsibility for damage caused by our failure to take reasonable care. Exact matching of aged finishes, timber, plasterwork or discontinued products may be impossible; proposed alternatives will be agreed. Please report concerns promptly so they can be inspected and addressed.\n## Programme materials and workmanship\nStart dates and programme changes: The agreed programme assumes timely approvals, access, selections, payments and deliveries. We will notify the client promptly of delays, explain their cause and likely effect, and take reasonable steps to reduce disruption. Client variations, late information, hidden conditions, adverse weather affecting exposed work and events beyond reasonable control may require a reasonable extension. Additional time does not automatically mean additional payment: any charge must have a contractual basis, be reasonable and be explained and agreed where required. We do not charge the client for delay attributable to our own default.\nClient selections and supplied items: The client must confirm selections and provide client-supplied items by the agreed dates. We will check reasonably apparent suitability before installation and raise concerns. Faulty, incomplete, incompatible or late client-supplied goods may delay work and lead to agreed extra visits or alterations. We remain responsible for damage caused by our handling and for installation quality. We will not substitute specified products without agreement, except where immediate safety requires temporary measures. Manufacturer lead times and guarantees will be explained where relevant.\nWindows kitchens flooring and services: Made-to-measure windows, glazing, bespoke joinery, worktops and steel require confirmed sizes and specifications before manufacture. Later changes may require replacement manufacture and additional delivery or fitting costs, agreed as a variation. Window refurbishment does not include replacement of concealed decayed sections or glass unless stated. Kitchen fitting includes only listed units, appliances, worktops and connections. Stone worktops, specialist templating, gas, electrical, plumbing and decoration works must be expressly identified as included.\n+ Floor prices assume the substrate condition and preparation stated in the quotation. Hidden unevenness, moisture, weak boards, damaged joists or the need for levelling, drying or extra acoustic treatment will be assessed before installation. Existing services are not assumed to meet current requirements merely because they remain in use. Tests or opening up may identify necessary remedial work; its scope and cost will be explained. Gas and electrical work requiring qualified specialists will be arranged accordingly, with applicable certification for the work included.\nQuality completion and aftercare: We will carry out our services with reasonable care and skill and use suitable materials for the agreed purpose. On completion, we will review the works with the client and record outstanding items, agreed snagging dates and available certificates or care instructions. Practical completion means the work is substantially complete and usable for its intended purpose, with only minor outstanding items; it does not remove our obligation to finish them. Please allow reasonable access to inspect and remedy reported defects. Manufacturer warranties are additional to statutory rights. Any separate workmanship guarantee must be stated in the quotation; these terms do not impose a time limit on statutory remedies.\n## Payments progress records and overdue accounts\nDeposit and procurement payments: Unless the quotation states otherwise, a 20% deposit is payable seven days before the agreed start date. It is credited against the contract total and supports mobilisation and initial procurement. Any earlier or additional payment for bespoke items must be separately identified, including what it purchases and when it becomes committed. A deposit is not automatically non-refundable. We will explain the treatment of identifiable off-site goods, their storage, insurance and ownership before requesting substantial advance payment. We will not invoice the same materials twice.\nStage payments and progress evidence: For larger or longer projects, the quotation will include agreed payment milestones and values before work starts. Unless expressly agreed otherwise, stage invoices are due seven calendar days after issue and will follow completion of the relevant milestone. On short projects, any different payment arrangement must be agreed in writing; an occasional agreed extension does not change future due dates. Timely stage payments fund the workforce, subcontractors and continuing deliveries and help avoid interruption.\n+ Each payment request will identify the relevant completed work, approved variations and, where agreed, identifiable materials procured for the project. We will maintain proportionate progress records such as dated photographs, site notes, delivery records and variation approvals, and provide a clear account of the original contract sum, additions and credits, previous payments and balance. The deposit and prior payments will be deducted. Except for expressly agreed advance procurement or mobilisation payments, stage requests will reflect the agreed value delivered. We will correct overcharges and credit or refund any overpayment promptly. The client may inspect progress by arrangement, subject to site safety.\nPayment queries and final balance: Please raise invoice queries promptly, identifying the disputed amount and reason. We will supply a breakdown and discuss the concern. The undisputed amount remains payable by the agreed date; nothing here removes a legal right to withhold an appropriate disputed sum. Minor snagging will be recorded with a reasonable timetable and any agreed proportionate retention. Unless otherwise agreed, the final balance is due within 14 calendar days of completion and issue of the final invoice, with agreed credits and variations reconciled. Payment or occupation does not waive rights concerning defects.\nOverdue payments and suspension: If an undisputed payment is overdue, we will contact the client and seek a prompt resolution. If it remains unpaid, we may give written notice stating the overdue amount, its basis and a proposed suspension date at least seven calendar days after the notice. If the amount remains unpaid when that notice expires, we may suspend affected work and procurement, leaving the site reasonably safe. We will not use this process to override a genuine legal right to withhold payment. Work will be rescheduled within a reasonable period after resolution, subject to workforce availability. Reasonable, evidenced demobilisation, storage or remobilisation costs caused by the breach may be recoverable where legally justified; they are not automatic penalties. No automatic consumer late-payment interest or flat recovery charge is imposed by these terms.\n## Cancellation communication and acceptance\nCancellation and ending the contract: Where statutory distance or off-premises cancellation rights apply, the client will receive the applicable cancellation information and model form before becoming bound. Services normally have a 14-day cancellation period from the day after the contract is made; goods and mixed supply-and-install contracts can have different starting dates. Made-to-measure goods and certain urgent repairs may have specific exceptions. We will identify the applicable position for this contract; bespoke goods do not automatically remove cancellation rights for all unrelated work.\n+ We will not start a service during an applicable cancellation period without the client's express request, recorded in writing. Where the required information and request have been provided, cancellation after an early start may require a proportionate payment for services actually supplied. The service cancellation right is lost on full performance only where the required express request and acknowledgement have been given. Outside statutory cancellation rights, a cancellation account will reflect completed work and reasonable unavoidable losses, less savings, recoveries and previous payments. We will mitigate losses and refund any excess; no automatic forfeiture of the full deposit applies.\n+ Either party may end the contract for a serious breach not remedied within a reasonable written notice period, normally 14 calendar days, allowing longer where reasonably necessary. Immediate action may be appropriate for serious safety threats. The client retains rights to end the contract or seek remedies where we breach our obligations. On termination we will document the position, make the site reasonably safe and reconcile sums fairly without charging twice.\nCommunication complaints and records: Please send instructions, drawing revisions and concerns to hiprobuild@gmail.com or the project contact agreed in writing. Contract notices should be sent by email or post to the stated contact details, with receipt requested. Only the named client or an authorised representative may approve chargeable changes. Progress photographs and project records are used for administration and evidence; identifiable client photographs will not be used in marketing without permission. Complaints will be acknowledged promptly and investigated, with a written response normally within 14 calendar days. If unresolved, we will discuss appropriate mediation or alternative dispute resolution and provide applicable information. Statutory remedies and access to courts remain available.\nLegal rights and payment details: Nothing in these terms excludes liability that cannot lawfully be excluded, including for death or personal injury caused by negligence, fraud or statutory consumer rights. Scottish law applies, subject to any mandatory consumer protections and jurisdiction rights. An unenforceable provision does not remove the remaining lawful terms. Payments: account name {bank.name}; bank Tide; sort code {bank.sort}; account number {bank.acc}. Use the invoice number and client name as reference. Verify any purported change of bank details by calling our established number.",
  exclusions:'Building warrant fees and structural engineer\'s fees are payable by the client unless listed above.\nAny gas work is carried out by a Gas Safe registered engineer and is quoted separately.\nKitchen units, appliances, sanitaryware and tiles are client-supplied unless listed above.\nUnforeseen defects found once work starts (e.g. hidden rot or wiring) will be discussed and agreed before any extra work.',
+ doc:{director:'Karol Kowalczyk',role:'Director',googleRating:'',googleCount:'',tatRating:'',tatCount:'',extraLabel:'',extraValue:'',insurance:'',guarantee:'',
+   paymentStages:'Deposit | 20 | 7 days before the agreed start date\nStage payment | 50 | On completion of the agreed milestone, due 7 days after invoice\nFinal balance | 30 | Within 14 days of completion and the final invoice',docTitle:'Estimate',cancelForm:true,
+   letter:'Dear {client},\n\nThank you for inviting us to {site}. Following our visit, please find our estimate for {project}.\n\nHiprobuild manages the whole project for you, from preparation to completion, using our own team and trusted specialist subcontractors. You have one point of contact, with every trade coordinated and scheduled together.\n\nStructural work is carried out in line with the structural engineer\'s design, the approved drawings and building warrant requirements. No structural work starts before approval.\n\nEach section of this estimate sets out exactly what is included, so you can see where every part of the price goes. Anything not included is listed clearly at the end, and anything unforeseen found once we start will be discussed and agreed with you before any extra work goes ahead.\n\nThe start date and programme are agreed when you accept the estimate and depend on the final scope, approvals and material lead times.\n\nWe would welcome the opportunity to work with you on this project.',
+   whyUs:'One point of contact | You deal with one team from the first visit to handover. No chasing separate trades.\nAll trades coordinated | Joinery, plumbing, electrical, plastering and finishing by our team and trusted specialist subcontractors, scheduled together.\nDone properly | Structural work follows the engineer\'s design, the approved drawings and building warrant requirements.\nClear, detailed estimate | Every item is listed and priced, so you can see exactly what you are paying for.\nNo surprises | Anything unforeseen is discussed and agreed with you before any extra work goes ahead.\nTidy, respectful sites | Floors and furniture protected, dust controlled and the site cleaned as we go.',
+   commitment:'Our commitment: a clear scope, coordinated trades and a properly finished home, managed from start to finish.'},
  invoiceTerms:'Payment by bank transfer within the due date shown. Please quote the invoice number as your payment reference.',
  rates:DEFAULT_RATES
 };
 
+const OLD_TERMS='Timelines are agreed at acceptance and depend on scope, building warrant approval and material lead times.\nStructural work is carried out in line with approved drawings and building warrant requirements. No structural work starts before approval.\nWork is carried out by our team and trusted specialist subcontractors.\nCovered by public liability insurance and our workmanship guarantee [guarantee terms to be confirmed].';
+function migrateSettings(st){ if(!st) return false; let ch=false; const co=st.company||(st.company={}), D=DEFAULT_SETTINGS.company;
+  const fix=(o,k,ph,v)=>{ if(o[k]===undefined||o[k]===''||o[k]===ph||(ph instanceof RegExp&&ph.test(o[k]))){ if(o[k]!==v){ o[k]=v; ch=true; } } };
+  fix(co,'address',/^\[Business address\]/,D.address); fix(co,'phone','[Phone number]',D.phone); fix(co,'email','[Email address]',D.email); fix(co,'companyNo','[Company number]',D.companyNo);
+  const bk=st.bank||(st.bank={}), DB=DEFAULT_SETTINGS.bank; fix(bk,'name','',DB.name); fix(bk,'sort','[Sort code]',DB.sort); fix(bk,'acc','[Account number]',DB.acc);
+  if(!st.quoteTerms||st.quoteTerms===OLD_TERMS){ st.quoteTerms=DEFAULT_SETTINGS.quoteTerms; ch=true; }
+  if(!st.termsV2){ st.termsV2=1; if(+st.depositPct===30){ st.depositPct=20; } ch=true; }
+  return ch; }
 /* ---------- state ---------- */
 const S={settings:structuredClone(DEFAULT_SETTINGS),docs:[],view:'dash',editing:null,filter:'all',tab:'edit',loaded:false,store:'local',db:null,downloads:null,armDel:null};
 let saveTimer=null;
@@ -427,7 +516,7 @@ async function sync(){
     const merged=r1.data.filter(r=>!pend.del[r.id]).map(r=>pend.docs[r.id]&&local.get(r.id)?local.get(r.id):Object.assign({},r.body,{id:r.id}));
     Object.keys(pend.docs).forEach(id=>{ if(!merged.some(d=>d.id===id)&&local.get(id)) merged.push(local.get(id)) });
     S.docs=merged;
-    if(r2.data&&!pend.settings) S.settings=Object.assign(structuredClone(DEFAULT_SETTINGS),r2.data.body);
+    if(r2.data&&!pend.settings){ S.settings=Object.assign(structuredClone(DEFAULT_SETTINGS),r2.data.body); if(migrateSettings(S.settings)){ pend.settings=Date.now(); scheduleSync(); } }
     if(!r2.data&&!pend.settings){ pend.settings=Date.now(); scheduleSync(); }
     synced=true; applyBrand(); lsWrite(); setSync('ok');
     if(S.view==='edit'){ const tb=document.getElementById('totbox'); if(tb) tb.innerHTML=totHtml(); } else if(!isTyping()) render();
@@ -481,7 +570,7 @@ function nextNumber(type){
 /* ---------- create ---------- */
 function blank(type,extra){
   const st=S.settings, d={id:uid(),type,number:nextNumber(type),date:today(),status:'draft',client:{name:'',email:'',phone:'',address:''},site:'',service:SERVICES[0],title:'',items:[],discount:0,vat:true,reverseCharge:false,notes:'',createdAt:new Date().toISOString()};
-  if(type==='quote'){d.validUntil=addDays(d.date,+st.validity||30); d.depositPct=+st.depositPct||0;}
+  if(type==='quote'){d.validUntil=addDays(d.date,+st.validity||30); d.depositPct=+st.depositPct||0; d.letter=''; d.stages=(st.doc||DEFAULT_SETTINGS.doc).paymentStages; d.showRates=true;}
   if(type==='invoice'){d.due=addDays(d.date,+st.payDays||14);}
   return Object.assign(d,extra||{});
 }
@@ -571,13 +660,17 @@ function vEdit(){
      <div class="row" style="justify-content:space-between;align-items:flex-start;gap:20px">
       <div class="grid" style="flex:1;min-width:220px">
        <div class="f"><label for="discount">Discount (£)</label><input id="discount" class="num" type="number" step="0.01" min="0" data-k="discount" value="${esc(d.discount||0)}"></div>
-       ${d.type==='quote'?`<div class="f"><label for="depositPct">Deposit to confirm (%)</label><input id="depositPct" class="num" type="number" min="0" max="100" data-k="depositPct" value="${esc(d.depositPct??0)}"></div>`:''}
        ${st.vatRegistered?`<label class="check f wide" style="flex-direction:row"><input type="checkbox" id="vat" data-k="vat" ${d.vat!==false?'checked':''}> Charge VAT at ${esc(st.vatRate)}%</label>
        <label class="check f wide" style="flex-direction:row"><input type="checkbox" id="reverseCharge" data-k="reverseCharge" ${d.reverseCharge?'checked':''}> Domestic reverse charge (business clients under CIS only)</label>`:''}
       </div>
       <div class="totbox" id="totbox"></div></div></div>`}
+    ${d.type==='quote'?`<div class="card sec"><div class="sec-h"><h2>Estimate document</h2><button class="btn sm" data-act="std-letter">Use standard letter</button></div>
+     <div class="f" style="max-width:260px"><label for="docTitle">Document title</label><select id="docTitle" data-k="docTitle">${['Estimate','Quotation'].map(o=>`<option ${docWord(d)===o?'selected':''}>${o}</option>`).join('')}</select></div>
+     <div class="f"><label for="letter">Cover letter (leave empty to skip the letter page)</label><textarea id="letter" data-k="letter" style="min-height:150px" placeholder="Tap “Use standard letter” to start from your template">${esc(d.letter||'')}</textarea></div>
+     <div class="f"><label for="stages">Payment stages, one per line: Stage | % | When</label><textarea id="stages" data-k="stages">${esc(d.stages!=null?d.stages:(st.doc||{}).paymentStages||'')}</textarea></div>
+     <label class="check" style="flex-direction:row"><input type="checkbox" id="showRates" data-k="showRates" ${d.showRates!==false?'checked':''}> Show quantity × rate under each item</label></div>`:''}
     <div class="card sec"><h2>Notes for the client</h2>
-     <div class="f"><label for="notes">${d.type==='quote'?'Scope summary or anything the client should know':'Notes'}</label><textarea id="notes" data-k="notes" placeholder="${d.type==='quote'?'e.g. Remove the wall between kitchen and dining room, install steel to engineer\'s design, make good and finish ready for the new kitchen.':''}">${esc(d.notes)}</textarea></div></div>
+     <div class="f"><label for="notes">${d.type==='quote'?'Scope summary (shown on the “Project at a glance” page)':'Notes'}</label><textarea id="notes" data-k="notes" placeholder="${d.type==='quote'?'e.g. Remove the wall between kitchen and dining room, install steel to engineer\'s design, make good and finish ready for the new kitchen.':''}">${esc(d.notes)}</textarea></div></div>
     ${saved?`<div class="row" style="justify-content:flex-end"><button class="btn ghost danger sm" data-act="del">${S.armDel===d.id?'Click again to delete for good':'Delete '+t.short.toLowerCase()}</button></div>`:''}
    </div>
    <div class="stickyp">
@@ -590,7 +683,7 @@ function itemsHtml(){
   const d=S.editing;
   if(!d.items.length) return `<div class="note">No lines yet. ${d.type==='quote'?'Pick a quick estimate above, or ':''}add lines from your price library.</div>`;
   return `<div class="it h"><span>Description</span><span style="text-align:right">Qty</span><span class="unit-c">Unit</span><span style="text-align:right">Rate £</span><span class="amt">Amount</span><span></span></div>`+
-   d.items.map((it,i)=>`<div class="it" data-i="${i}"><div class="desc"><input class="secin" data-ik="section" value="${esc(it.section)}" aria-label="Trade / section" list="secs" placeholder="Trade"><input data-ik="desc" value="${esc(it.desc)}" aria-label="Description"><span class="libsv" data-lib-slot="${i}">${libBtn(it,i)}</span></div>
+   d.items.map((it,i)=>`<div class="it" data-i="${i}"><div class="desc"><input class="secin" data-ik="section" value="${esc(it.section)}" aria-label="Trade / section" list="secs" placeholder="Trade"><input data-ik="desc" value="${esc(it.desc)}" aria-label="Description">${d.type==='quote'?`<input class="secin" data-ik="detail" value="${esc(it.detail||'')}" aria-label="Details" placeholder="Details shown under this item (optional)">`:''}<span class="libsv" data-lib-slot="${i}">${libBtn(it,i)}</span></div>
    <input class="n" type="number" step="0.1" min="0" data-ik="qty" value="${esc(it.qty)}" aria-label="Quantity">
    <select class="unit-c" data-ik="unit" aria-label="Unit">${UNITS.map(u=>`<option ${it.unit===u?'selected':''}>${u}</option>`).join('')}</select>
    <input class="n" type="number" step="0.01" min="0" data-ik="rate" value="${esc(it.rate)}" aria-label="Rate">
@@ -604,7 +697,7 @@ function totHtml(){
    ${c.discount?`<div><span class="sub">Discount</span><span class="num">−${money(c.discount)}</span></div>`:''}
    ${st.vatRegistered?`<div><span class="sub">${d.reverseCharge?'VAT (reverse charge)':'VAT '+st.vatRate+'%'}</span><span class="num">${money(c.vat)}</span></div>`:''}
    <div class="big"><span>Total</span><span class="num">${money(c.total)}</span></div>
-   ${d.type==='quote'&&+d.depositPct?`<div><span class="sub">Deposit ${d.depositPct}%</span><span class="num">${money(c.total*d.depositPct/100)}</span></div>`:''}
+   ${d.type==='quote'&&depPct(d)?`<div><span class="sub">Deposit ${depPct(d)}%</span><span class="num">${money(c.total*depPct(d)/100)}</span></div>`:''}
    ${d.type==='invoice'&&c.paid?`<div><span class="sub">Paid so far</span><span class="num">${money(c.paid)}</span></div><div><b>Balance due</b><b class="num">${money(c.due)}</b></div>`:''}`;
 }
 function bindEditor(){
@@ -628,6 +721,7 @@ async function save(quiet){
 
 /* ---------- paper ---------- */
 function paperHtml(d){
+  if(d.type==='quote') return quoteDocHtml(d);
   const st=S.settings, co=st.company, t=TYPES[d.type], c=calc(d), isR=d.type==='receipt';
   const parent=d.parentId?S.docs.find(x=>x.id===d.parentId):null;
   const groups=[]; c.lines.forEach(l=>{const k=l.section||'Works';let g=groups.find(x=>x.k===k);if(!g)groups.push(g={k,items:[],sum:0});g.items.push(l);g.sum+=l.amount});
@@ -677,6 +771,138 @@ function paperHtml(d){
     <div style="text-align:right">Company no. ${esc(co.companyNo)}${st.vatRegistered?`<br>VAT reg. ${esc(co.vatNo)}`:''}<br>Our team and trusted specialist subcontractors</div></div>
   </div>`;
 }
+/* ---------- estimate document (quotes) ---------- */
+function stagesOf(d){ const src=(d&&d.stages!=null&&String(d.stages).trim()!=='')?d.stages:(S.settings.doc||{}).paymentStages||'';
+  return String(src).split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(p=>p[0]).map(([name,pct,when])=>({name,pct:parseFloat(pct)||0,when:when||''})); }
+function depPct(d){ if(!d||d.type!=='quote') return 0; const s=stagesOf(d); return s.length?s[0].pct:(+d.depositPct||0); }
+function fillLetter(d){ const t=(S.settings.doc||{}).letter||DEFAULT_SETTINGS.doc.letter;
+  const name=d.client.name||'[Client name]';
+  return t.replace(/\{client\}/g,name).replace(/\{site\}/g,d.site||d.client.address||'[site address]').replace(/\{project\}/g,(d.title||d.service||'the works').replace(/^./,c=>c.toLowerCase())).replace(/\{date\}/g,fdate(d.date)); }
+const STARS=n=>{ const r=Math.max(0,Math.min(5,Math.round(+n||0))); return '★'.repeat(r)+'☆'.repeat(5-r); };
+function qContact(co){ return [co.phone,co.email,co.web].filter(Boolean).map(esc).join('<i>|</i>'); }
+function qGroups(d){ const c=calc(d), groups=[]; c.lines.forEach(l=>{ const k=String(l.section||'').trim()||'Works'; let g=groups.find(x=>x.k.toLowerCase()===k.toLowerCase()); if(!g) groups.push(g={k,items:[],sum:0}); g.items.push(l); g.sum+=l.amount; }); return {c,groups}; }
+function qFoot(d,n,N){ const co=S.settings.company;
+  return `<div class="q-foot"><span><b>${esc(co.name)}</b> | Company no. ${esc(co.companyNo)} | Registered in Scotland${S.settings.vatRegistered?' | VAT '+esc(co.vatNo):''}</span><span>${esc(d.number)} | ${esc((d.site||d.client.address||'').split('\n')[0])}${(d.site||d.client.address)?' | ':''}Page ${n} of ${N}</span></div>`; }
+function qSheet(d,body,n,N){ const co=S.settings.company;
+  return `<div class="q-sheet"><div class="q-head"><img src="${LOGO}" alt="${esc(co.name)}"><div><b>${esc(co.name)}</b><span>${qContact(co)}</span></div></div><div class="q-rule"></div><div class="q-body">${body}</div>${qFoot(d,n,N)}</div>`; }
+function qCover(d,N){ const st=S.settings, co=st.company, x=st.doc||{}, {groups}=qGroups(d);
+  const b=[];
+  b.push(`<div class="q-badge dk"><b>All trades</b><small>One contractor</small><em>Fully coordinated renovations</em></div>`);
+  if(x.googleRating) b.push(`<div class="q-badge"><b>${esc(x.googleRating)}</b><span class="st">${STARS(x.googleRating)}</span><small>Google reviews</small>${x.googleCount?`<em>${esc(x.googleCount)} reviews</em>`:''}</div>`);
+  if(x.tatRating) b.push(`<div class="q-badge"><b>${esc(x.tatRating)}</b><span class="st">${STARS(x.tatRating)}</span><small>TrustATrader</small>${x.tatCount?`<em>${esc(x.tatCount)} reviews</em>`:''}</div>`);
+  if(x.extraLabel) b.push(`<div class="q-badge"><b>${esc(x.extraValue||'✓')}</b><small>${esc(x.extraLabel)}</small></div>`);
+  if(x.insurance) b.push(`<div class="q-badge dk"><b>Fully insured</b><small>Public liability</small><em>${esc(x.insurance)}</em></div>`);
+  if(x.guarantee) b.push(`<div class="q-badge"><b>Guaranteed</b><small>Workmanship guarantee</small><em>${esc(x.guarantee)}</em></div>`);
+  b.push(`<div class="q-badge"><b>Local</b><small>Edinburgh &amp; the Lothians</small></div>`);
+  const trades=groups.map(g=>g.k).filter(k=>k.toLowerCase()!=='works');
+  return `<div class="q-sheet"><div class="q-cband"><img src="${LOGO}" alt="${esc(co.name)}"><div class="q-cc">${qContact(co)}</div>${co.address?`<div class="q-cc" style="margin-top:4px;color:#C9D1D9">${esc(String(co.address).replace(/\n/g,', '))}</div>`:''}</div><div class="q-rule"></div>
+   <div class="q-cbody"><div class="q-kick">${esc(d.service||'Renovation')}</div><div class="q-big">${esc(docWord(d).toUpperCase())}</div><div class="q-bar"></div>
+    <div class="q-cli">${esc(d.client.name||'Client name')}</div><div class="q-site">${esc(d.site||d.client.address||'Site address')}</div>
+    ${d.title?`<div class="q-proj">${esc(d.title)}</div>`:''}
+    <div class="q-meta">Date: <b>${fdate(d.date)}</b> &nbsp;|&nbsp; Ref: <b>${esc(d.number)}</b>${d.validUntil?` &nbsp;|&nbsp; Valid until: <b>${fdate(d.validUntil)}</b>`:''}</div>
+    ${trades.length?`<div class="q-trades">${trades.map(esc).join(' &nbsp;|&nbsp; ')}</div>`:''}
+    <div class="q-badges">${b.join('')}</div>
+    ${x.director?`<div class="q-prep">Prepared by <b>${esc(x.director)}</b>${x.role?', '+esc(x.role):''}, ${esc(co.name)}</div>`:''}
+   </div>${qFoot(d,1,N)}</div>`; }
+function qBlocks(d){
+  const st=S.settings, co=st.company, x=st.doc||{}, {c,groups}=qGroups(d), stg=stagesOf(d), out=[];
+  const title=(h,p)=>`<div class="q-title"><h2>${h}</h2>${p?`<p>${p}</p>`:''}</div>`;
+  const site=d.site||d.client.address||'';
+  // cover letter
+  if(String(d.letter||'').trim()){
+    out.push({brk:1,html:`<div>${title(esc(docWord(d))+' cover letter')}<table class="q-kv" style="margin-top:14px"><tr><td>Dated:</td><td>${fdate(d.date)}</td></tr><tr><td>To:</td><td>${esc(d.client.name||'')}</td></tr>${site?`<tr><td>Site:</td><td>${esc(site)}</td></tr>`:''}<tr><td>Project:</td><td>${esc(d.title||d.service)}</td></tr><tr><td>Reference:</td><td>${esc(d.number)}</td></tr></table></div>`});
+    String(d.letter).split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).forEach(p=>out.push({html:`<p class="q-p">${esc(p)}</p>`}));
+    if(x.director) out.push({html:`<p class="q-p q-sig">Kind regards,\n\n<b>${esc(x.director)}</b>\n${esc(x.role?x.role+', ':'')}${esc(co.name)}</p>`});
+  }
+  // at a glance + why us
+  const pay=stg.length?stg.map(s=>`${s.pct}% ${s.when?s.when.charAt(0).toLowerCase()+s.when.slice(1):s.name}`).join(', '):'';
+  out.push({brk:1,html:`<div>${title('Project at a glance','A clear overview before the detailed scope and prices')}<div class="q-cards" style="margin-top:14px">
+    <div class="q-card"><h4>Client &amp; site</h4><p>${esc([d.client.name,site].filter(Boolean).join('\n'))}</p></div>
+    <div class="q-card"><h4>Project</h4><p>${esc(d.title||d.service)}\n${esc(d.service)}</p></div>
+    ${d.notes?`<div class="q-card w"><h4>Scope summary</h4><p>${esc(d.notes)}</p></div>`:''}
+    <div class="q-card"><h4>Estimate total</h4><p><b>${money(c.total)}</b> ${c.vatOn?'including VAT':(st.vatRegistered?'':'(no VAT charged)')}\nBroken down in ${groups.length} section${groups.length===1?'':'s'} below</p></div>
+    <div class="q-card"><h4>Payment</h4><p>${esc(pay||'Agreed at acceptance')}</p></div>
+    <div class="q-card w"><h4>Timeline</h4><p>Start date and programme agreed when you accept, depending on final scope, approvals and material lead times.</p></div></div></div>`});
+  const why=String(x.whyUs||'').split('\n').map(l=>l.split('|').map(s=>s.trim())).filter(p=>p[0]);
+  if(why.length) out.push({html:`<div><div class="q-h3">Why ${esc(co.name.replace(/\s+(contracts\s+)?ltd\.?$/i,''))}</div><div class="q-cards">${why.map(([h,t])=>`<div class="q-card"><h4>${esc(h)}</h4><p>${esc(t||'')}</p></div>`).join('')}</div></div>`});
+  if(x.commitment) out.push({html:`<div class="q-banner">${esc(x.commitment)}</div>`});
+  // sections
+  out.push({brk:1,html:title('Scope of works &amp; prices',`Every item we will carry out, grouped by trade${c.vatOn?'':', prices exclude VAT'}`)});
+  if(!groups.length) out.push({html:`<p class="q-note">Line items will appear here.</p>`});
+  groups.forEach((g,gi)=>{ const n=gi+1;
+    const head=cont=>`<div><div class="q-sec">${n}. ${esc(g.k)}${cont?' (continued)':''}<span>${money(g.sum)}</span></div><table class="q-tbl"><tbody></tbody></table></div>`;
+    const rows=g.items.map((l,i)=>`<tr><td class="no">${n}.${i+1}</td><td><b>${esc(l.desc)}</b>${l.detail?`<p>${esc(l.detail)}</p>`:''}${d.showRates!==false?`<small>${esc(+l.qty||0)} ${esc(l.unit)} × ${money(l.rate)}</small>`:''}</td><td class="am">${money(l.amount)}</td></tr>`);
+    rows.push(`<tr class="sub"><td></td><td>Subtotal: ${n}. ${esc(g.k)}</td><td class="am">${money(g.sum)}</td></tr>`);
+    out.push({html:head(false),cont:head(true),rows});
+  });
+  // summary
+  const srows=groups.map((g,i)=>`<tr><td class="no">${i+1}</td><td>${esc(g.k)}</td><td class="am">${money(g.sum)}</td></tr>`);
+  srows.push(`<tr class="sub"><td></td><td>Subtotal</td><td class="am">${money(c.sub)}</td></tr>`);
+  if(c.discount) srows.push(`<tr><td></td><td>Discount</td><td class="am">−${money(c.discount)}</td></tr>`);
+  if(st.vatRegistered) srows.push(`<tr><td></td><td>${d.reverseCharge?'VAT: reverse charge':'VAT @ '+esc(st.vatRate)+'%'}</td><td class="am">${money(c.vat)}</td></tr>`);
+  srows.push(`<tr class="tot"><td></td><td>TOTAL${c.vatOn?' (including VAT)':''}</td><td class="am">${money(c.total)}</td></tr>`);
+  out.push({brk:1,html:`<div>${title(esc(docWord(d))+' summary',`Price for the full scope in sections 1 to ${groups.length||1}`)}<table class="q-tbl" style="margin-top:14px"><tbody></tbody></table></div>`,rows:srows});
+  if(stg.length) out.push({html:`<div><div class="q-h3">Payment stages</div><table class="q-tbl"><tr><th>Stage</th><th class="r">%</th><th class="r">Amount</th><th>When</th></tr>${stg.map(s=>`<tr><td><b>${esc(s.name)}</b></td><td class="r">${esc(s.pct)}%</td><td class="am">${money(c.total*s.pct/100)}</td><td>${esc(s.when)}</td></tr>`).join('')}</table></div>`});
+  out.push({html:`<p class="q-note">This ${esc(docWord(d).toLowerCase())} is valid until ${fdate(d.validUntil)}. ${d.reverseCharge?'Customer to account to HMRC for the VAT on this supply (reverse charge, Section 55A VAT Act 1994). ':''}Any change to the scope is priced and agreed with you in writing before the work goes ahead.</p>`});
+  // not included + terms
+  const exc=String(st.exclusions||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  if(exc.length) out.push({brk:1,html:`<div><div class="q-h3">Not included</div><table class="q-tbl list"><tbody></tbody></table></div>`,cont:`<div><div class="q-h3">Not included (continued)</div><table class="q-tbl list"><tbody></tbody></table></div>`,rows:exc.map(t=>`<tr><td class="no">•</td><td>${esc(t)}</td></tr>`)});
+  const bk=st.bank||{}; const tl=String(st.quoteTerms||'').replace(/\{bank\.name\}/g,bk.name||'').replace(/\{bank\.sort\}/g,bk.sort||'').replace(/\{bank\.acc\}/g,bk.acc||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  const tItems=[]; let tn=0, grp='';
+  tl.forEach(t=>{ if(/^##\s*/.test(t)){ grp=t.replace(/^##\s*/,''); return; }
+    if(/^\+\s*/.test(t)&&tItems.length){ tItems[tItems.length-1].paras.push(t.replace(/^\+\s*/,'')); return; }
+    tn++; const m=t.match(/^(?:\d+[.)]\s*)?([^:.]{2,60}):\s*(.+)$/); tItems.push({n:tn,grp,h:m?m[1]:'',paras:[m?m[2]:t.replace(/^\d+[.)]\s*/,'')]}); grp=''; });
+  if(tItems.length) out.push({brk:!exc.length,html:`<div><div class="q-h3">Terms and conditions</div><table class="q-tbl list"><tbody></tbody></table></div>`,cont:`<div><div class="q-h3">Terms and conditions (continued)</div><table class="q-tbl list"><tbody></tbody></table></div>`,
+    rows:tItems.map(it=>`<tr><td class="no">${it.n}.</td><td>${it.grp?`<div class="q-tgrp">${esc(it.grp)}</div>`:''}${it.h?`<b>${esc(it.h)}.</b> `:''}${esc(it.paras[0])}${it.paras.slice(1).map(p=>`<p>${esc(p)}</p>`).join('')}</td></tr>`)});
+  // acceptance
+  out.push({brk:1,html:`<div>${title(esc(docWord(d))+' acceptance')}<table class="q-kv" style="margin-top:14px"><tr><td>Estimate for:</td><td>${esc(d.title||d.service)}${site?', '+esc(site.split('\n')[0]):''}</td></tr><tr><td>To:</td><td>${esc(d.client.name||'')}</td></tr><tr><td>From:</td><td>${esc(co.name)}</td></tr><tr><td>Reference:</td><td>${esc(d.number)}, dated ${fdate(d.date)}</td></tr></table></div>`});
+  out.push({html:`<div><div class="q-h3">Contract value</div><table class="q-tbl"><tr><td>Full scope (sections 1 to ${groups.length||1})${st.vatRegistered?', excluding VAT':''}</td><td class="am">${money(c.net)}</td></tr>${st.vatRegistered?`<tr><td>${d.reverseCharge?'VAT: reverse charge':'VAT @ '+esc(st.vatRate)+'%'}</td><td class="am">${money(c.vat)}</td></tr>`:''}<tr class="tot"><td>TOTAL${c.vatOn?' (including VAT)':''}</td><td class="am">${money(c.total)}</td></tr></table></div>`});
+  if(stg.length) out.push({html:`<div><div class="q-h3">Payment</div><table class="q-tbl"><tr><th>Payment stage</th><th class="r">%</th><th class="r">Amount</th><th>When invoiced</th></tr>${stg.map((s,i)=>`<tr><td>${i+1}. ${esc(s.name)}</td><td class="r">${esc(s.pct)}%</td><td class="am">${money(c.total*s.pct/100)}</td><td>${esc(s.when)}</td></tr>`).join('')}</table></div>`});
+  out.push({html:`<div><p class="q-p">I confirm receipt of this ${esc(docWord(d).toLowerCase())}, the identified contract documents and the terms and conditions above before acceptance, and I accept the scope of works and price set out in this document. Any applicable cancellation information has also been supplied. This acknowledgement does not limit my statutory rights. This ${esc(docWord(d).toLowerCase())} is valid until ${fdate(d.validUntil)}.</p><div class="q-signs"><div><b>${esc(x.director||'')}</b>${x.director?'':'&nbsp;'}Contractor signature / date<br>${esc(co.name)}</div><div><b>${esc(d.client.name||'')}</b>${d.client.name?'':'&nbsp;'}Client signature / date</div></div></div>`});
+  if(x.cancelForm!==false){
+    const line='<span class="q-ln"></span>';
+    out.push({brk:1,html:`<div>${title('Cancellation information')}<p class="q-p" style="margin-top:12px">Where statutory distance or off-premises cancellation rights apply, you can normally cancel a contract for services within 14 days from the day after the contract is made. Made-to-measure goods and certain urgent repairs may have specific exceptions. See clause 20 of our terms and conditions.</p></div>`});
+    out.push({html:`<div><div class="q-h3">Separate optional request for early services</div><p class="q-p" style="font-size:10.5px">Complete only if you want services to begin during an applicable cancellation period. This request is optional and is not a condition of acceptance.</p><p class="q-p" style="margin-top:10px">I expressly request services to start on ${line} before my cancellation period ends. I understand that, if I then cancel, I may have to pay a proportionate amount for services supplied up to cancellation, where the legal conditions are met. I acknowledge that my service cancellation right will be lost once the service is fully performed, if completed within that period following my express request.</p><div class="q-signs"><div><b>&nbsp;</b>Client signature</div><div><b>&nbsp;</b>Date</div></div></div>`});
+    out.push({html:`<div style="border:1.5px dashed var(--paper-line);padding:14px 16px"><div class="q-h3">Model cancellation form</div><p class="q-p" style="font-size:10.5px">Complete and return only if you wish to cancel and have a right to do so. You may instead give any other clear statement of cancellation.</p>
+      <table class="q-kv" style="margin-top:8px"><tr><td>To:</td><td>${esc(co.name)}, ${esc(String(co.address||'').replace(/\n/g,', '))}; ${esc(co.email)}</td></tr></table>
+      <p class="q-p" style="margin-top:8px">I/We hereby give notice that I/We cancel my/our contract for the sale of the following goods / supply of the following service:</p>
+      <div class="q-fill"></div><div class="q-fill" data-l="Ordered on / received on"></div><div class="q-fill" data-l="Name and address of consumer(s)"></div><div class="q-fill"></div><div class="q-fill" data-l="Signature of consumer(s), only if on paper"></div><div class="q-fill" data-l="Date"></div>
+      <p class="q-p" style="font-size:9px;color:var(--paper-muted);margin-top:8px">Delete as appropriate. Consumer rights references: Consumer Rights Act 2015; Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013.</p></div>`});
+  }
+  return out;
+}
+function qPaginate(d,blocks){
+  const m=document.createElement('div'); m.style.cssText='position:fixed;left:-30000px;top:0;visibility:hidden;pointer-events:none';
+  document.body.appendChild(m); m.innerHTML=qSheet(d,'',2,2); const body=m.querySelector('.q-body');
+  const pages=[], over=()=>body.scrollHeight>body.clientHeight+1, empty=()=>!body.children.length;
+  const flush=()=>{ if(!empty()) pages.push(body.innerHTML); body.innerHTML=''; };
+  const add=h=>{ const w=document.createElement('div'); w.innerHTML=h; const el=w.firstElementChild; body.appendChild(el); return el; };
+  try{
+    for(const b of blocks){
+      if(b.brk) flush();
+      if(!b.rows){ const el=add(b.html); if(over()&&body.children.length>1){ el.remove(); flush(); add(b.html); } continue; }
+      let el=add(b.html), tb=el.querySelector('tbody'), placed=0;
+      if(!b.rows.length) continue;
+      for(const r of b.rows){
+        tb.insertAdjacentHTML('beforeend',r);
+        if(over()){
+          tb.lastElementChild.remove();
+          if(placed===0){ el.remove(); flush(); el=add(b.html); }
+          else { flush(); el=add(b.cont||b.html); }
+          tb=el.querySelector('tbody'); tb.insertAdjacentHTML('beforeend',r);
+        }
+        placed++;
+      }
+    }
+    flush();
+  } finally { m.remove(); }
+  return pages;
+}
+const docWord=d=>(d.docTitle||(S.settings.doc||{}).docTitle||'Estimate');
+function quoteDocHtml(d){
+  const pages=qPaginate(d,qBlocks(d)), N=pages.length+1;
+  return `<div class="pages">${qCover(d,N)}${pages.map((p,i)=>qSheet(d,p,i+2,N)).join('')}</div>`;
+}
 function drawPreview(){ const sc=document.getElementById('scaler'); if(!sc||!S.editing)return; sc.innerHTML=paperHtml(S.editing); fitPreview(); }
 function fitPreview(){ const pv=document.getElementById('pv'),sc=document.getElementById('scaler'); if(!pv||!sc)return;
   const w=pv.clientWidth-28; const s=Math.min(1,w/794); sc.style.transform=`scale(${s})`; const p=sc.firstElementChild; sc.style.height=(p?p.offsetHeight*s:0)+'px'; sc.style.width='794px'; pv.style.height=(p?p.offsetHeight*s+28:0)+'px'; }
@@ -687,8 +913,19 @@ async function makePdf(){
   if(!window.html2canvas||!window.jspdf){toast('PDF tools did not load. Refresh the page and try again.');return}
   btn.disabled=true; btn.textContent='Preparing PDF…';
   try{
-    const host=document.getElementById('pdfhost'); host.innerHTML=paperHtml(d);
+    const host=document.getElementById('pdfhost');
     if(document.fonts&&document.fonts.ready) await document.fonts.ready;
+    host.innerHTML=paperHtml(d);
+    if(d.type==='quote'){
+      const pdf=new window.jspdf.jsPDF({unit:'pt',format:'a4'}); const W=595.28,H=841.89, sheets=[...host.querySelectorAll('.q-sheet')];
+      for(let i=0;i<sheets.length;i++){ btn.textContent=`Preparing PDF… ${i+1}/${sheets.length}`;
+        const cv=await html2canvas(sheets[i],{scale:2,backgroundColor:'#ffffff',logging:false,width:794,height:1123});
+        if(i) pdf.addPage(); pdf.addImage(cv.toDataURL('image/jpeg',0.92),'JPEG',0,0,W,H); }
+      host.innerHTML='';
+      const name=`${d.number} Estimate ${(d.client.name||'').replace(/[^\w\s-]/g,'')}`.trim()+'.pdf';
+      await saveFile(name,pdf.output('blob'),true); toast('PDF ready');
+      btn.disabled=false; btn.textContent=PDF_LBL; return;
+    }
     const canvas=await html2canvas(host.firstElementChild,{scale:2,backgroundColor:'#ffffff',logging:false});
     const pdf=new window.jspdf.jsPDF({unit:'pt',format:'a4'}); const W=595.28,H=841.89; const h=canvas.height*W/canvas.width;
     const img=canvas.toDataURL('image/jpeg',0.93); let y=0; pdf.addImage(img,'JPEG',0,0,W,h);
@@ -701,7 +938,7 @@ async function makePdf(){
 }
 function waText(d){
   const c=calc(d), first=(d.client.name||'').split(' ')[0]||'there';
-  if(d.type==='quote') return `Hi ${first}, thanks for having us out. Your quote ${d.number} for ${d.title||d.service} is attached.\n\nTotal: ${money(c.total)}${c.vatOn?' inc VAT':''}${+d.depositPct?`\nDeposit to confirm: ${money(c.total*d.depositPct/100)}`:''}\nValid until: ${fdate(d.validUntil)}\n\nEverything is coordinated by us, one point of contact from start to finish. Any questions, just message me here.\n\nKarol\n${S.settings.company.name}`;
+  if(d.type==='quote') return `Hi ${first}, thanks for having us out. Your quote ${d.number} for ${d.title||d.service} is attached.\n\nTotal: ${money(c.total)}${c.vatOn?' inc VAT':''}${depPct(d)?`\nDeposit to confirm: ${money(c.total*depPct(d)/100)}`:''}\nValid until: ${fdate(d.validUntil)}\n\nEverything is coordinated by us, one point of contact from start to finish. Any questions, just message me here.\n\nKarol\n${S.settings.company.name}`;
   if(d.type==='invoice') return `Hi ${first}, please find invoice ${d.number} attached.\n\nAmount due: ${money(c.due)}\nDue by: ${fdate(d.due)}\nBank: ${S.settings.bank.name}, sort code ${S.settings.bank.sort}, account ${S.settings.bank.acc}\nReference: ${d.number}\n\nThank you.\nKarol\n${S.settings.company.name}`;
   return `Hi ${first}, thank you, payment of ${money(d.amount)} received. Your receipt ${d.number} is attached.\n\nKarol\n${S.settings.company.name}`;
 }
@@ -768,6 +1005,7 @@ function gptSetupText(withPrices){
 
 When Karol describes a job, break it into line items from the PRICE LIBRARY below. Use the item code and the unit shown, and work out sensible quantities from what he tells you. Ask one short question if a quantity is missing.
 ${withPrices?'You can use the rates below to give Karol a rough total.':'Do not add prices for library items. The Estimator fills in Karol\'s own labour and material rates automatically from the code.'}
+For each item, "details" is one or two plain sentences for the client explaining what the work includes (optional).
 If something is not in the library, add it with "code": "" and a clear description${withPrices?'':', and only add a "rate" if Karol gives you one'}.
 No VAT. Gas work is done by a Gas Safe registered engineer, so only include it if Karol gives the figure. Structural work follows the engineer's drawings and building warrant. Do not include engineer or warrant fees unless Karol gives them.
 
@@ -779,7 +1017,7 @@ When Karol types "export", reply with ONE JSON code block only, in this exact fo
   "client": { "name": "", "phone": "", "email": "", "address": "" },
   "site_address": "",
   "items": [
-    { "code": "ST-01", "section": "Structural", "description": "", "qty": 1, "unit": "m" }
+    { "code": "ST-01", "section": "Structural", "description": "", "details": "", "qty": 1, "unit": "m" }
   ],
   "notes": ""
 }
@@ -801,7 +1039,7 @@ function installHtml(){
   return '<p class="sub" style="margin:0">Open your browser menu and choose <b>Install app</b> or <b>Add to Home screen</b>.</p>';
 }
 function vSettings(){
-  const s=S.settings, co=s.company;
+  const s=S.settings, co=s.company; if(!s.doc) s.doc=structuredClone(DEFAULT_SETTINGS.doc); else s.doc=Object.assign(structuredClone(DEFAULT_SETTINGS.doc),s.doc);
   const fld=(id,l,v,w)=>`<div class="f ${w||''}"><label for="${id}">${l}</label><input id="${id}" data-sk="${id}" value="${esc(v)}"></div>`;
   return `<div class="head"><div><div class="eyebrow">Settings</div><h1>Business details</h1></div><span class="saving">Changes save automatically</span></div>
   ${sb?`<div class="card sec"><div class="sec-h"><h2>Account</h2><span class="pill info" data-sync></span></div><p class="sub" style="margin:0">Signed in as <b>${esc(session&&session.user?session.user.email:'')}</b>. Quotes and invoices sync to every phone and laptop signed in to this account.</p><div class="row"><button class="btn" data-act="signout">Sign out</button></div></div>`:''}
@@ -817,8 +1055,19 @@ function vSettings(){
    ${fld('vatRate','VAT rate %',s.vatRate)}${fld('payDays','Invoice due after (days)',s.payDays)}${fld('validity','Quote valid for (days)',s.validity)}
    ${fld('depositPct','Default deposit %',s.depositPct)}
    <label class="check f" style="flex-direction:row;align-self:end"><input type="checkbox" data-sk="vatRegistered" ${s.vatRegistered?'checked':''}> VAT registered</label></div></div>
+  <div class="card sec"><h2>Estimate document</h2><p class="sub" style="margin:0">Shown on every estimate. Leave a badge empty to hide it. Only add ratings, insurance and guarantee details once they are confirmed.</p><div class="grid">
+   ${fld('doc.director','Signed by',s.doc.director)}${fld('doc.role','Role',s.doc.role)}
+   ${fld('doc.googleRating','Google rating (e.g. 5.0)',s.doc.googleRating)}${fld('doc.googleCount','Number of Google reviews',s.doc.googleCount)}
+   ${fld('doc.tatRating','TrustATrader rating (e.g. 4.9)',s.doc.tatRating)}${fld('doc.tatCount','Number of TrustATrader reviews',s.doc.tatCount)}
+   ${fld('doc.insurance','Public liability (e.g. £[amount] cover)',s.doc.insurance)}${fld('doc.guarantee','Workmanship guarantee (e.g. [length] on all work)',s.doc.guarantee)}
+   ${fld('doc.extraLabel','Extra badge name (e.g. another review site)',s.doc.extraLabel)}${fld('doc.extraValue','Extra badge value (e.g. 5.0)',s.doc.extraValue)}</div>
+   <div class="f"><label for="doc.paymentStages">Default payment stages, one per line: Stage | % | When</label><textarea id="doc.paymentStages" data-sk="doc.paymentStages">${esc(s.doc.paymentStages)}</textarea></div>
+   <div class="f"><label for="doc.letter">Standard cover letter. {client}, {site}, {project} and {date} fill in automatically</label><textarea id="doc.letter" data-sk="doc.letter" style="min-height:180px">${esc(s.doc.letter)}</textarea></div>
+   <div class="f"><label for="doc.whyUs">Why choose us, one per line: Title | Text</label><textarea id="doc.whyUs" data-sk="doc.whyUs" style="min-height:120px">${esc(s.doc.whyUs)}</textarea></div>
+   ${fld('doc.commitment','Commitment banner',s.doc.commitment,'wide')}
+   <label class="check" style="flex-direction:row"><input type="checkbox" data-sk="doc.cancelForm" ${s.doc.cancelForm!==false?'checked':''}> Add the cancellation information and model cancellation form at the end</label></div>
   <div class="card sec"><h2>Standard wording</h2>
-   <div class="f"><label for="quoteTerms">Quote terms</label><textarea id="quoteTerms" data-sk="quoteTerms" style="min-height:120px">${esc(s.quoteTerms)}</textarea></div>
+   <div class="f"><label for="quoteTerms">Terms and conditions. One clause per line, numbered automatically. “Title: text” makes the title bold, a line starting with + adds another paragraph to the clause above, and ## starts a group heading. {bank.sort} and {bank.acc} fill in from Payments above.</label><textarea id="quoteTerms" data-sk="quoteTerms" style="min-height:120px">${esc(s.quoteTerms)}</textarea></div>
    <div class="f"><label for="exclusions">Not included (exclusions)</label><textarea id="exclusions" data-sk="exclusions" style="min-height:120px">${esc(s.exclusions)}</textarea></div>
    <div class="f"><label for="invoiceTerms">Invoice payment terms</label><textarea id="invoiceTerms" data-sk="invoiceTerms">${esc(s.invoiceTerms)}</textarea></div></div>
   <div class="card sec"><h2>Backup</h2><p class="sub" style="margin:0">${sb&&session?'Everything syncs automatically. A backup file is extra peace of mind.':'Everything is saved on this device. Download a backup each week, and use it to move your documents to another phone or laptop.'}</p>
@@ -869,7 +1118,7 @@ function parseGpt(txt){
   let fromLib=0;
   const items=(Array.isArray(j.items)?j.items:[]).map(it=>{
     const line={code:String(it.code||'').trim().toUpperCase(),section:String(it.section||it.trade||'').trim(),desc:String(it.description||it.desc||it.name||'').trim(),
-      qty:num(it.qty??it.quantity??1)||1,unit:toUnit(it.unit||'item'),rate:num(it.rate??it.price??it.unit_price??it.amount)};
+      qty:num(it.qty??it.quantity??1)||1,unit:toUnit(it.unit||'item'),rate:num(it.rate??it.price??it.unit_price??it.amount),detail:String(it.details||it.detail||'').trim()};
     const r=libFind(line.code,line.desc);
     if(r){ fromLib++; line.code=r.code; line.section=r.section; line.desc=r.desc; line.unit=r.unit; if(+r.rate>0) line.rate=r.rate; }
     else if(line.code&&!line.desc) line.desc='Item '+line.code+' (not in price library)';
@@ -963,6 +1212,7 @@ document.addEventListener('click',async e=>{
       r.section=x.section||r.section; r.desc=x.desc; r.unit=x.unit||r.unit; if(x.code&&!L.some(y=>y!==r&&String(y.code).toUpperCase()===x.code)) r.code=x.code;
       if(x.labour!==null||x.materials!==null){ r.labour=x.labour||0; r.materials=x.materials||0; } else if(x.total!==null){ r.labour=x.total; r.materials=0; } });
     S.settings.rates=L; normRates(L); S._codesDirty=false; await persistSettings(); closeModal(); render(); toast(add+' added, '+upd+' updated in your price library'); }
+  if(a==='std-letter'&&S.editing){ S.editing.letter=fillLetter(S.editing); const t=document.getElementById('letter'); if(t) t.value=S.editing.letter; touched(); return; }
   if(a==='gpt-setup'){ if(S._codesDirty){ S._codesDirty=false; await persistSettings(); } modal(gptSetupModal(false)); }
   if(a==='gpt-copy'){ const t=document.getElementById('gptsetup'); try{ await navigator.clipboard.writeText(t.value); toast('Copied. Paste it into ChatGPT.'); closeModal(); }catch(e){ t.focus(); t.select(); toast('Select all and copy the text.'); } }
 });
@@ -998,7 +1248,7 @@ document.addEventListener('change',async e=>{ if(e.target.id!=='ratefile'||!e.ta
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 
 /* ---------- boot ---------- */
-function ingest(settings,docs){ if(settings){ S.settings=Object.assign(structuredClone(DEFAULT_SETTINGS),settings); if(normRates(S.settings.rates)) S._codesDirty=true; } if(docs) S.docs=docs; applyBrand(); }
+function ingest(settings,docs){ if(settings){ S.settings=Object.assign(structuredClone(DEFAULT_SETTINGS),settings); if(normRates(S.settings.rates)) S._codesDirty=true; if(migrateSettings(S.settings)){ pend.settings=Date.now(); setTimeout(lsWrite,0); } } if(docs) S.docs=docs; applyBrand(); }
 document.getElementById('loginform').addEventListener('submit',async e=>{
   e.preventDefault(); const btn=e.target.querySelector('button'), err=document.getElementById('loginerr');
   err.hidden=true; btn.disabled=true; btn.textContent='Signing in…';
@@ -1017,6 +1267,7 @@ window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredP
     }catch(e){ sb=null }
   }
   S.loaded=true; applyBrand(); render(); sync();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ if(S.view==='edit') drawPreview(); });
   window.addEventListener('online',scheduleSync); window.addEventListener('offline',()=>setSync('off'));
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden) scheduleSync() });
   setInterval(()=>{ if(!document.hidden&&!syncing) sync() },60000);
